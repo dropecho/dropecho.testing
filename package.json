@@ -6,6 +6,7 @@
   "repository": "github:dropecho/dropecho.testing",
   "license": "MIT",
   "scripts": {
+    "build": "echo No build.",
     "test": "echo NO TESTS SETUP."
   },
   "devDependencies": {
