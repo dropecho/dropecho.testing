@@ -1,0 +1,120 @@
+{
+	doc: null
+	fields: [{
+		access: [AStatic, APublic]
+		doc: null
+		kind: FFun({
+			args: []
+			expr: {
+				expr: EBlock([{
+					expr: EVars([{
+						expr: {
+							expr: EArrayDecl([])
+							pos: #pos
+						}
+						isFinal: false
+						meta: []
+						name: suites
+						type: null
+					}])
+					pos: #pos
+				}, {
+					expr: EVars([{
+						expr: {
+							expr: ENew({
+								name: SuitesRunner
+								pack: [buddy]
+								params: []
+								sub: null
+							}, [{
+								expr: EConst(CIdent(suites))
+								pos: #pos
+							}, {
+								expr: EConst(CIdent(null))
+								pos: #pos
+							}])
+							pos: #pos
+						}
+						isFinal: false
+						meta: []
+						name: runner
+						type: null
+					}])
+					pos: #pos
+				}, {
+					expr: EVars([{
+						expr: {
+							expr: ECall({
+								expr: EField({
+									expr: EConst(CIdent(runner))
+									pos: #pos
+								}, run)
+								pos: #pos
+							}, [])
+							pos: #pos
+						}
+						isFinal: false
+						meta: []
+						name: r
+						type: null
+					}])
+					pos: #pos
+				}, {
+					expr: ECall({
+						expr: EField({
+							expr: EConst(CIdent(r))
+							pos: #pos
+						}, then)
+						pos: #pos
+					}, [{
+						expr: EFunction(FArrow, {
+							args: [{
+								meta: null
+								name: _
+								opt: false
+								type: null
+								value: null
+							}]
+							expr: {
+								expr: EMeta({
+									name: :implicitReturn
+									params: []
+									pos: #pos
+								}, {
+									expr: EReturn({
+										expr: EBlock([{
+											expr: null <- expected value
+											pos: null <- expected value
+										}])
+										pos: #pos
+									})
+									pos: #pos
+								})
+								pos: #pos
+							}
+							params: []
+							ret: null
+						})
+						pos: #pos
+					}])
+					pos: #pos
+				}])
+				pos: #pos
+			}
+			params: []
+			ret: null
+		})
+		meta: []
+		name: main
+		pos: #pos
+	}]
+	isExtern: null
+	kind: TDClass(null, null, null, false, false)
+	meta: null
+	name: TestSuites
+	pack: [dropecho, testing]
+	params: []
+	pos: #pos
+}
+line 86: expected value
+line 87: expected value

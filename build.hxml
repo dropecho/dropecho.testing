@@ -1,0 +1,11 @@
+# CODE PATH
+--define analyzer-optimize
+
+--class-path src
+--macro include('', true, null, ['src'])
+
+# Include above in each target.
+--each
+
+--next
+targets/docs.hxml
