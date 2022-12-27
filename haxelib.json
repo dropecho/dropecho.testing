@@ -8,8 +8,8 @@
     "vantreeseba"
   ],
   "main": "tools/Run.hx",
-  "version": "0.1.0",
-  "releasenote": "",
+  "version": "1.0.0",
+  "releasenote": "Release version 1.0.0. See CHANGELOG.md for details.",
   "tags": [],
   "license": "MIT"
 }
