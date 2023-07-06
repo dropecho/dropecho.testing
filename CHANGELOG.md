@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/dropecho/dropecho.testing/compare/1.1.0...1.1.1) (2023-07-06)
+
+
+### Bug Fixes
+
+* Improve readme. ([8895625](https://github.com/dropecho/dropecho.testing/commit/8895625cfee2933d962430e8b419d76c7a221f86))
+
 # [1.1.0](https://github.com/dropecho/dropecho.testing/compare/1.0.1...1.1.0) (2023-07-06)
 
 
