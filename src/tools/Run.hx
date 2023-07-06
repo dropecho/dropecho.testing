@@ -44,6 +44,7 @@ typedef RunConfig = {
 	instrument:{
 		coverage:Bool, profiler:Bool, coverage_reporter:String
 	},
+	//   root_package:String,
 	hxml:String,
 }
 
@@ -59,16 +60,19 @@ class Run {
 		config = LoadOrMakeConfig();
 
 		var command = args.length > 0 ? args.pop() : "run";
+		var returnCode = 0;
 
 		switch (command) {
 			case "setup":
 				SetupConfig();
 			default:
-				Run();
+				returnCode = Run();
 		}
+
+		Sys.exit(returnCode);
 	}
 
-	static function Run() {
+	static function Run():Int {
 		var path = FileSystem.absolutePath(config.hxml);
 
 		if (!FileSystem.exists(path)) {
@@ -81,9 +85,13 @@ class Run {
 
 		BuildTests(path);
 
+		var returnCode = 0;
+
 		for (target in GetTargets(path)) {
-			RunTests(target);
+			returnCode += RunTests(target);
 		}
+
+		return returnCode;
 	}
 
 	static function CleanPath(root:String, ?path:String) {
@@ -107,10 +115,12 @@ class Run {
 
 		args.push("--main=dropecho.testing.AutoTest");
 
+		//     var root_package = config.root_package;
+
 		//     if (config.instrument != null) {
 		//       args.push("--library=instrument");
 		//       if (config.instrument.coverage == true) {
-		//         args.push('--macro=instrument.Instrumentation.coverage(["dropecho"],["src"],[])');
+		//         args.push('--macro=instrument.Instrumentation.coverage(["${root_package}"],["src"],[])');
 		//       }
 		//
 		//       if (config.instrument.coverage_reporter != null) {
@@ -121,18 +131,24 @@ class Run {
 		Sys.command("haxe", args);
 	}
 
-	static function RunTests(target:TargetConfig) {
+	static function RunTests(target:TargetConfig):Int {
 		Sys.stdout().writeString('${target.target} tests:\n');
 		Sys.stdout().flush();
+
 		var runnerName = switch (target.target) {
 			case TargetType.neko: TargetRunner.neko;
 			case TargetType.js: TargetRunner.js;
 			case TargetType.python: TargetRunner.python;
 			case TargetType.cs: target.path + "/bin/AutoTest.exe";
-			default: return;
+			default: return 0;
 		}
 
-		Sys.command(runnerName, [target.path]);
+		var exitCode = Sys.command(runnerName, [target.path]);
+
+		Sys.stdout().writeString('\n');
+		Sys.stdout().flush();
+
+		return exitCode;
 	}
 
 	static function GetTargets(hxml:String):Array<TargetConfig> {
@@ -165,6 +181,7 @@ class Run {
 		var userConfigFile = FileSystem.absolutePath('.dropecho.testing.json');
 		var config = {
 			instrument: null,
+			//       root_package: null,
 			hxml: 'test.hxml'
 		}
 
