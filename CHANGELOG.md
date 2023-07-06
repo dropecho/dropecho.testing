@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/dropecho/dropecho.testing/compare/1.0.1...1.1.0) (2023-07-06)
+
+
+### Features
+
+* Make testing return exit code (mostly for failure tracking). ([12dfcfd](https://github.com/dropecho/dropecho.testing/commit/12dfcfd1b827881520fcbac04b47a31369a5fa64))
+
 ## [1.0.1](https://github.com/dropecho/dropecho.testing/compare/1.0.0...1.0.1) (2022-12-27)
 
 
