@@ -28,7 +28,7 @@
       "semantic-release-haxelib",
       {
         "haxelibPublish": true,
-        "additionalFiles": ["tools"]
+        "additionalFiles": ["tools/Run.hx"]
       }
     ],
     "@semantic-release/github",
