@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/dropecho/dropecho.testing/compare/1.1.1...1.1.2) (2023-07-07)
+
+
+### Bug Fixes
+
+* Fix issue with run script location in haxelib.json ([12af435](https://github.com/dropecho/dropecho.testing/commit/12af4355644f8e71925b5b5f51249fad1bb65224))
+
 ## [1.1.1](https://github.com/dropecho/dropecho.testing/compare/1.1.0...1.1.1) (2023-07-06)
 
 
