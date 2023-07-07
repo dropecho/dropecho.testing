@@ -4,10 +4,12 @@
   "classPath": "src/",
   "dependencies": {},
   "url": "https://github.com/dropecho/dropecho.testing/",
-  "contributors": ["vantreeseba"],
+  "contributors": [
+    "vantreeseba"
+  ],
   "main": "tools.Run",
-  "version": "1.1.2",
-  "releasenote": "Release version 1.1.2. See CHANGELOG.md for details.",
+  "version": "1.1.3",
+  "releasenote": "Release version 1.1.3. See CHANGELOG.md for details.",
   "tags": [],
   "license": "MIT"
 }

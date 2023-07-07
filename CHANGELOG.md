@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/dropecho/dropecho.testing/compare/1.1.2...1.1.3) (2023-07-07)
+
+
+### Bug Fixes
+
+* Actually fix main/run. ([dbaeeba](https://github.com/dropecho/dropecho.testing/commit/dbaeeba1aef6d65cd19da4f698e512909b25ed24))
+
 ## [1.1.2](https://github.com/dropecho/dropecho.testing/compare/1.1.1...1.1.2) (2023-07-07)
 
 
