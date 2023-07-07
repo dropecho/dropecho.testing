@@ -1,7 +1,5 @@
 {
-  "branches": [
-    "main"
-  ],
+  "branches": ["main"],
   "tagFormat": "${version}",
   "plugins": [
     [
@@ -9,11 +7,7 @@
       {
         "preset": "angular",
         "parserOpts": {
-          "noteKeywords": [
-            "BREAKING CHANGE",
-            "BREAKING CHANGES",
-            "BREAKING"
-          ]
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
         }
       }
     ],
@@ -22,17 +16,10 @@
       {
         "preset": "angular",
         "parserOpts": {
-          "noteKeywords": [
-            "BREAKING CHANGE",
-            "BREAKING CHANGES",
-            "BREAKING"
-          ]
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
         },
         "writerOpts": {
-          "commitsSort": [
-            "subject",
-            "scope"
-          ]
+          "commitsSort": ["subject", "scope"]
         }
       }
     ],
@@ -41,18 +28,14 @@
       "semantic-release-haxelib",
       {
         "haxelibPublish": true,
-        "additionalFiles": []
+        "additionalFiles": ["tools"]
       }
     ],
     "@semantic-release/github",
     [
       "@semantic-release/git",
       {
-        "assets": [
-          "*.md",
-          "package.json",
-          "haxelib.json"
-        ]
+        "assets": ["*.md", "package.json", "haxelib.json"]
       }
     ]
   ],
