@@ -1,3 +1,11 @@
+## [1.1.4](https://github.com/dropecho/dropecho.testing/compare/1.1.3...1.1.4) (2023-07-07)
+
+
+### Bug Fixes
+
+* Fix issue with directories not currently working with semantic haxelib additional files. ([1c8ce46](https://github.com/dropecho/dropecho.testing/commit/1c8ce466a98ffd5e47d8cb3a6b3d60e67d07c8b5))
+* Include tools in published haxelib. ([6460c06](https://github.com/dropecho/dropecho.testing/commit/6460c06a9650a3e7930cb2d1503fa169144fad5e))
+
 ## [1.1.3](https://github.com/dropecho/dropecho.testing/compare/1.1.2...1.1.3) (2023-07-07)
 
 
