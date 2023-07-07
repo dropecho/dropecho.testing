@@ -4,12 +4,11 @@
   "classPath": "src/",
   "dependencies": {},
   "url": "https://github.com/dropecho/dropecho.testing/",
-  "contributors": [
-    "vantreeseba"
-  ],
-  "main": "tools/Run.hx",
+  "contributors": ["vantreeseba"],
+  "main": "src/tools/Run.hx",
   "version": "1.1.1",
   "releasenote": "Release version 1.1.1. See CHANGELOG.md for details.",
   "tags": [],
   "license": "MIT"
 }
+
