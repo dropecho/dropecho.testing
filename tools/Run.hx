@@ -26,7 +26,7 @@ abstract TargetRunner(String) from String to String {
 	//   var as3 = "as3";
 	var js = "node";
 	var neko = "neko";
-	//   var cpp = "cpp";
+	var cpp = "cpp";
 	//   var java = "java";
 	var cs = "";
 	var python = "python3";
@@ -52,6 +52,7 @@ class Run {
 	static var targets:Array<TargetType> = [js, neko, java, cpp, cs, python, php, hl, lua];
 	static var config:RunConfig;
 
+	@run
 	public static function main() {
 		var args = Sys.args();
 		// set CWD to calling dir.
@@ -140,6 +141,7 @@ class Run {
 			case TargetType.js: TargetRunner.js;
 			case TargetType.python: TargetRunner.python;
 			case TargetType.cs: target.path + "/bin/AutoTest.exe";
+			case TargetType.cpp: target.path + "/AutoTest";
 			default: return 0;
 		}
 
