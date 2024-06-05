@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/dropecho/dropecho.testing/compare/1.1.4...1.1.5) (2024-06-05)
+
+
+### Bug Fixes
+
+* Make cpp tests work. ([1eb2766](https://github.com/dropecho/dropecho.testing/commit/1eb2766d6432a5edb002f72b58bcdead19a5360f))
+
 ## [1.1.4](https://github.com/dropecho/dropecho.testing/compare/1.1.3...1.1.4) (2023-07-07)
 
 
