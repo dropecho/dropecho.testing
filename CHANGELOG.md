@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/dropecho/dropecho.testing/compare/1.1.5...1.2.0) (2025-01-24)
+
+
+### Features
+
+* Add ability to use instrument lib with test runners. ([7839351](https://github.com/dropecho/dropecho.testing/commit/783935175b9c1176fd8490bdcfa0a5dae55210aa))
+
 ## [1.1.5](https://github.com/dropecho/dropecho.testing/compare/1.1.4...1.1.5) (2024-06-05)
 
 
