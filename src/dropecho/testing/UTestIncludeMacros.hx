@@ -50,7 +50,9 @@ class UTestIncludeMacros {
 
 							#if instrument
 							runner.onComplete.add(_ -> {
+								// End instrumentation when manually running tests.
 								instrument.coverage.Coverage.endCoverage();
+								instrument.profiler.Profiler.endProfiler();
 							});
 							#end
 

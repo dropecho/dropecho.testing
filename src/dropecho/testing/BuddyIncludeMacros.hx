@@ -47,7 +47,9 @@ class BuddyIncludeMacros {
 							var runner = new buddy.SuitesRunner(suites, null);
 							runner.run().then(_ -> {
 								#if instrument
+                // End instrumentation when manually running tests.
 								instrument.coverage.Coverage.endCoverage();
+								instrument.profiler.Profiler.endProfiler();
 								#end
 
 								Sys.exit(runner.statusCode());
