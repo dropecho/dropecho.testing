@@ -46,6 +46,10 @@ class BuddyIncludeMacros {
 							var suites = $a{suites};
 							var runner = new buddy.SuitesRunner(suites, null);
 							runner.run().then(_ -> {
+								#if instrument
+								instrument.coverage.Coverage.endCoverage();
+								#end
+
 								Sys.exit(runner.statusCode());
 							});
 						},

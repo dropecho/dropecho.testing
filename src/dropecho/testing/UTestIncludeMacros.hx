@@ -48,7 +48,15 @@ class UTestIncludeMacros {
 								runner.addCase(s);
 							}
 
-							utest.ui.Report.create(runner);
+							#if instrument
+							runner.onComplete.add(_ -> {
+								instrument.coverage.Coverage.endCoverage();
+							});
+							#end
+
+							utest.ui.Report.create(runner, utest.ui.common.HeaderDisplayMode.SuccessResultsDisplayMode.NeverShowSuccessResults,
+								utest.ui.common.HeaderDisplayMode.NeverShowHeader);
+
 							runner.run();
 						}
 					}),
