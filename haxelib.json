@@ -8,8 +8,8 @@
     "vantreeseba"
   ],
   "main": "tools.Run",
-  "version": "1.1.5",
-  "releasenote": "Release version 1.1.5. See CHANGELOG.md for details.",
+  "version": "1.2.0",
+  "releasenote": "Release version 1.2.0. See CHANGELOG.md for details.",
   "tags": [],
   "license": "MIT"
 }
