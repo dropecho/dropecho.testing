@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "echo No build.",
-    "test": "haxelib run dropecho.testing"
+    "test": "haxe --main dropecho.testing.AutoTest test.hxml && neko artifacts/test/run_tests.n"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.2",
