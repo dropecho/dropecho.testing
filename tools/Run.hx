@@ -172,7 +172,8 @@ class Run {
 				runner = exe;
 				args = [target.path];
 				#else
-				runner = CommandExists("dotnet") ? "dotnet" : "mono";
+				// hxcs produces Mono PE32 assemblies; prefer mono, fall back to dotnet
+				runner = CommandExists("mono") ? "mono" : "dotnet";
 				args = [exe, target.path];
 				#end
 			case TargetType.cpp:
