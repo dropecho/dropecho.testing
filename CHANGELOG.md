@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/dropecho/dropecho.testing/compare/1.5.2...1.5.3) (2026-05-13)
+
+
+### Bug Fixes
+
+* **runner:** prefer mono over dotnet for CS test execution on non-Windows ([#3](https://github.com/dropecho/dropecho.testing/issues/3)) ([da0f96e](https://github.com/dropecho/dropecho.testing/commit/da0f96eecb5fd28c0ba40f63cc37fb790bdbb8a6))
+
 ## [1.5.2](https://github.com/dropecho/dropecho.testing/compare/1.5.1...1.5.2) (2026-05-13)
 
 
