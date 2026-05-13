@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/dropecho/dropecho.testing/compare/1.4.0...1.5.0) (2026-05-13)
+
+
+### Bug Fixes
+
+* Use direct haxe compile in test script instead of haxelib run ([9d3949c](https://github.com/dropecho/dropecho.testing/commit/9d3949cc1d340ea91bd58f0e06d042801fb556af))
+
+
+### Features
+
+* Add tests for hxml parsing and document instrument as peer dep ([41d626b](https://github.com/dropecho/dropecho.testing/commit/41d626b02ccdc11fe75ead51d890659235e08832))
+
 # [1.4.0](https://github.com/dropecho/dropecho.testing/compare/1.3.0...1.4.0) (2026-05-13)
 
 
