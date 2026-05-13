@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/dropecho/dropecho.testing/compare/1.5.1...1.5.2) (2026-05-13)
+
+
+### Bug Fixes
+
+* **runner:** detect platform and use dotnet/mono for CS test execution ([557937f](https://github.com/dropecho/dropecho.testing/commit/557937f2dd2e5a0b09ce0b3a371cfc1abeea7607))
+
 ## [1.5.1](https://github.com/dropecho/dropecho.testing/compare/1.5.0...1.5.1) (2026-05-13)
 
 
