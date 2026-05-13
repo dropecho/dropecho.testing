@@ -114,19 +114,24 @@ class Run {
 	static function BuildTests(path:String) {
 		var args = [];
 
-		args.push("--main=dropecho.testing.AutoTest");
+		args.push("--main");
+		args.push("dropecho.testing.AutoTest");
 
 		var root_package = config.root_package;
 
 		if (config.instrument != null) {
-			args.push("--library=instrument");
-			args.push("--define=instrument");
+			args.push("--library");
+			args.push("instrument");
+			args.push("--define");
+			args.push("instrument");
 			if (config.instrument.coverage == true) {
-				args.push('--macro=instrument.Instrumentation.coverage(["${root_package}"],["src"],[])');
+				args.push("--macro");
+				args.push('instrument.Instrumentation.coverage(["${root_package}"],["src"],[])');
 			}
 
 			if (config.instrument.coverage_reporter != null) {
-				args.push('--define=' + config.instrument.coverage_reporter);
+				args.push("--define");
+				args.push(config.instrument.coverage_reporter);
 			}
 		}
 		args.push(path);
