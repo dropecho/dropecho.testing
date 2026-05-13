@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/dropecho/dropecho.testing/compare/1.5.0...1.5.1) (2026-05-13)
+
+
+### Bug Fixes
+
+* **runner:** use space-separated args instead of = syntax for haxe flags ([dc4fa0d](https://github.com/dropecho/dropecho.testing/commit/dc4fa0df72a81978991f4914282947560b9c9191))
+
 # [1.5.0](https://github.com/dropecho/dropecho.testing/compare/1.4.0...1.5.0) (2026-05-13)
 
 
