@@ -64,6 +64,10 @@
 - Updates `README.md`, `package.json`, and `haxelib.json` with version
 - Also publishes `tools/Run.hx` as a release asset
 
+## Dependencies
+
+`instrument` is an **optional peer dependency**. Users who want coverage/profiling must install it themselves (`haxelib install instrument`). It is intentionally absent from `haxelib.json` `dependencies` — adding it there would force all users to install it even when they don't use instrumentation. Haxelib has no formal peer-dep mechanism; the convention here is: not in `dependencies` = peer/optional.
+
 ## Code Style
 
 - Haxe source follows standard Haxe conventions (PascalCase classes, camelCase fields)

@@ -154,9 +154,8 @@ class Run {
 		return exitCode;
 	}
 
-	static function GetTargets(hxml:String):Array<TargetConfig> {
+	public static function ParseTargets(content:String):Array<TargetConfig> {
 		var targetsInHxml = [];
-		var content = sys.io.File.getContent(hxml);
 		var lines = content.split("\n");
 
 		for (line in lines) {
@@ -165,12 +164,17 @@ class Run {
 				if (matcher.match(line)) {
 					targetsInHxml.push({
 						target: target,
-						path: matcher.matched(1)
+						path: StringTools.trim(matcher.matched(1))
 					});
 				}
 			}
 		}
 		return targetsInHxml;
+	}
+
+	static function GetTargets(hxml:String):Array<TargetConfig> {
+		var content = sys.io.File.getContent(hxml);
+		return ParseTargets(content);
 	}
 
 	static function SetupConfig() {

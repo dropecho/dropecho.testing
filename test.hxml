@@ -1,0 +1,6 @@
+--class-path src
+--class-path .
+
+--library utest
+
+--neko artifacts/test/run_tests.n
