@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/dropecho/dropecho.testing/compare/1.3.0...1.4.0) (2026-05-13)
+
+
+### Features
+
+* Finish instrumentation/coverage wiring in CLI runner ([d4c1cd0](https://github.com/dropecho/dropecho.testing/commit/d4c1cd08ae4c34fedce8f56ac76e117d23da0230))
+
 # [1.3.0](https://github.com/dropecho/dropecho.testing/compare/1.2.0...1.3.0) (2025-01-24)
 
 
