@@ -56,8 +56,19 @@ class UTestIncludeMacros {
 							});
 							#end
 
-							utest.ui.Report.create(runner, utest.ui.common.HeaderDisplayMode.SuccessResultsDisplayMode.NeverShowSuccessResults,
+							#if verbose
+							utest.ui.Report.create(runner,
+								utest.ui.common.HeaderDisplayMode.SuccessResultsDisplayMode.AlwaysShowSuccessResults,
+								utest.ui.common.HeaderDisplayMode.AlwaysShowHeader);
+							#elseif show_headers
+							utest.ui.Report.create(runner,
+								utest.ui.common.HeaderDisplayMode.SuccessResultsDisplayMode.NeverShowSuccessResults,
+								utest.ui.common.HeaderDisplayMode.AlwaysShowHeader);
+							#else
+							utest.ui.Report.create(runner,
+								utest.ui.common.HeaderDisplayMode.SuccessResultsDisplayMode.NeverShowSuccessResults,
 								utest.ui.common.HeaderDisplayMode.NeverShowHeader);
+							#end
 
 							runner.run();
 						}
