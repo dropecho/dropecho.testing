@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/dropecho/dropecho.testing/compare/1.5.3...1.6.0) (2026-05-13)
+
+
+### Features
+
+* **runner:** add verbose/show_headers defines to control test output ([#4](https://github.com/dropecho/dropecho.testing/issues/4)) ([3aa7faa](https://github.com/dropecho/dropecho.testing/commit/3aa7faa6fe3996be81501a3a2e8a6ac535d33b84))
+
 ## [1.5.3](https://github.com/dropecho/dropecho.testing/compare/1.5.2...1.5.3) (2026-05-13)
 
 
