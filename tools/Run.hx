@@ -138,20 +138,51 @@ class Run {
 		Sys.command("haxe", args);
 	}
 
+	static function CommandExists(cmd:String):Bool {
+		#if windows
+		var proc = new sys.io.Process("where", [cmd]);
+		#else
+		var proc = new sys.io.Process("which", [cmd]);
+		#end
+		var code = proc.exitCode();
+		proc.close();
+		return code == 0;
+	}
+
 	static function RunTests(target:TargetConfig):Int {
 		Sys.stdout().writeString('${target.target} tests:\n');
 		Sys.stdout().flush();
 
-		var runnerName = switch (target.target) {
-			case TargetType.neko: TargetRunner.neko;
-			case TargetType.js: TargetRunner.js;
-			case TargetType.python: TargetRunner.python;
-			case TargetType.cs: target.path + "/bin/AutoTest.exe";
-			case TargetType.cpp: target.path + "/AutoTest";
-			default: return 0;
+		var runner:String;
+		var args:Array<String>;
+
+		switch (target.target) {
+			case TargetType.neko:
+				runner = TargetRunner.neko;
+				args = [target.path];
+			case TargetType.js:
+				runner = TargetRunner.js;
+				args = [target.path];
+			case TargetType.python:
+				runner = TargetRunner.python;
+				args = [target.path];
+			case TargetType.cs:
+				var exe = target.path + "/bin/AutoTest.exe";
+				#if windows
+				runner = exe;
+				args = [target.path];
+				#else
+				runner = CommandExists("dotnet") ? "dotnet" : "mono";
+				args = [exe, target.path];
+				#end
+			case TargetType.cpp:
+				runner = target.path + "/AutoTest";
+				args = [target.path];
+			default:
+				return 0;
 		}
 
-		var exitCode = Sys.command(runnerName, [target.path]);
+		var exitCode = Sys.command(runner, args);
 
 		Sys.stdout().writeString('\n');
 		Sys.stdout().flush();
