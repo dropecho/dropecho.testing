@@ -44,7 +44,7 @@ typedef RunConfig = {
 	instrument:{
 		coverage:Bool, profiler:Bool, coverage_reporter:String
 	},
-	//   root_package:String,
+	root_package:String,
 	hxml:String,
 }
 
@@ -116,18 +116,19 @@ class Run {
 
 		args.push("--main=dropecho.testing.AutoTest");
 
-		//     var root_package = config.root_package;
+		var root_package = config.root_package;
 
-		//     if (config.instrument != null) {
-		//       args.push("--library=instrument");
-		//       if (config.instrument.coverage == true) {
-		//         args.push('--macro=instrument.Instrumentation.coverage(["${root_package}"],["src"],[])');
-		//       }
-		//
-		//       if (config.instrument.coverage_reporter != null) {
-		//         args.push('--define=' + config.instrument.coverage_reporter);
-		//       }
-		//     }
+		if (config.instrument != null) {
+			args.push("--library=instrument");
+			args.push("--define=instrument");
+			if (config.instrument.coverage == true) {
+				args.push('--macro=instrument.Instrumentation.coverage(["${root_package}"],["src"],[])');
+			}
+
+			if (config.instrument.coverage_reporter != null) {
+				args.push('--define=' + config.instrument.coverage_reporter);
+			}
+		}
 		args.push(path);
 		Sys.command("haxe", args);
 	}
@@ -183,7 +184,7 @@ class Run {
 		var userConfigFile = FileSystem.absolutePath('.dropecho.testing.json');
 		var config = {
 			instrument: null,
-			//       root_package: null,
+			root_package: null,
 			hxml: 'test.hxml'
 		}
 
