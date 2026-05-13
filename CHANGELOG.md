@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/dropecho/dropecho.testing/compare/1.2.0...1.3.0) (2025-01-24)
+
+
+### Features
+
+* Add ability to use profiling with instrument lib. ([bb41e0b](https://github.com/dropecho/dropecho.testing/commit/bb41e0b4904da2ed04f53e8a8791010434549993))
+
 # [1.2.0](https://github.com/dropecho/dropecho.testing/compare/1.1.5...1.2.0) (2025-01-24)
 
 
