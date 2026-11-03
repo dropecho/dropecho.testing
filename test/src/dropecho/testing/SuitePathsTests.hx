@@ -35,6 +35,26 @@ class SuitePathsTests extends utest.Test {
 		Assert.isFalse(SuitePaths.isWalked(".git"));
 	}
 
+	function testParseExcludesNormalizesEntries() {
+		Assert.same(["test", "a/b", "c/d"], SuitePaths.parseExcludes(" test/ ,, ./a/b ,c\\d\\"));
+	}
+
+	function testParseExcludesReturnsNothingWhenUnset() {
+		Assert.same([], SuitePaths.parseExcludes(null));
+		Assert.same([], SuitePaths.parseExcludes(""));
+	}
+
+	function testIsExcludedMatchesTheFolderAndItsChildren() {
+		Assert.isTrue(SuitePaths.isExcluded("test", ["test"]));
+		Assert.isTrue(SuitePaths.isExcluded("test/fixtures/", ["test"]));
+		Assert.isTrue(SuitePaths.isExcluded("test\\fixtures", ["test"]));
+	}
+
+	function testIsExcludedMatchesWholeSegmentsOnly() {
+		Assert.isFalse(SuitePaths.isExcluded("testing", ["test"]));
+		Assert.isFalse(SuitePaths.isExcluded("src/test", ["test"]));
+	}
+
 	function testTypePathBuildsPackageFromFolders() {
 		var suite = SuitePaths.typePath("src/", "src/math/geometry/AreaTests.hx");
 

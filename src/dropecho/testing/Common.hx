@@ -15,15 +15,17 @@ typedef SuitesData = {
 
 class Common {
 	/**
-	Finds every test suite on the project's classpaths.
+	Finds every test suite on the project's classpaths, skipping the folders named
+	in the `dropecho_testing_exclude` define.
 
 	@return One `new Suite()` expression per discovered `*Tests.hx` file.
 	**/
 	public static function collectSuites():Array<Expr> {
+		var excludes = SuitePaths.parseExcludes(Context.definedValue("dropecho_testing_exclude"));
 		var suites = [];
 
 		for (root in extractPath()) {
-			var found = extractTestSuites(root, root, {suites: []});
+			var found = extractTestSuites(root, root, {suites: []}, excludes);
 			for (file in found.suites) {
 				suites.push(extractExpr(root, file));
 			}
@@ -72,9 +74,10 @@ class Common {
 	@param root The classpath root the walk started from.
 	@param dir The folder to walk, under `root`.
 	@param data Collects the suite paths found.
+	@param excludes Folders to skip, relative to `root`.
 	@return `data`, with the suites under `dir` added.
 	**/
-	public static function extractTestSuites(root:String, dir:String, data:SuitesData):SuitesData {
+	public static function extractTestSuites(root:String, dir:String, data:SuitesData, ?excludes:Array<String>):SuitesData {
 		if (!FS.isDirectory(dir)) {
 			return data;
 		}
@@ -84,8 +87,10 @@ class Common {
 			var path = folder + entry;
 
 			if (FS.isDirectory(path)) {
-				if (SuitePaths.isWalked(entry)) {
-					extractTestSuites(root, path, data);
+				var skipped = !SuitePaths.isWalked(entry)
+					|| (excludes != null && SuitePaths.isExcluded(path.substring(root.length), excludes));
+				if (!skipped) {
+					extractTestSuites(root, path, data, excludes);
 				}
 			} else if (SuitePaths.isSuiteFile(entry)) {
 				data.suites.push(path);

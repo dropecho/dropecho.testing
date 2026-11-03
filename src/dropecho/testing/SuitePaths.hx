@@ -31,6 +31,45 @@ class SuitePaths {
 	}
 
 	/**
+	Parses the `dropecho_testing_exclude` define into normalized folder paths.
+
+	@param value The define's comma-separated value, or null when it is not set.
+	@return The folders to skip, without empty entries or trailing slashes.
+	**/
+	public static function parseExcludes(value:Null<String>):Array<String> {
+		if (value == null) {
+			return [];
+		}
+
+		var excludes = [];
+		for (entry in value.split(",")) {
+			var path = normalize(entry);
+			if (path.length > 0) {
+				excludes.push(path);
+			}
+		}
+		return excludes;
+	}
+
+	/**
+	Says whether a folder is skipped by discovery. An exclude matches whole path
+	segments from the classpath root, so `test` skips `test/fixtures` but not `testing`.
+
+	@param relativeDir The folder's path relative to the classpath root being scanned.
+	@param excludes Folders from `parseExcludes`.
+	@return True if the folder or one of its parents is excluded.
+	**/
+	public static function isExcluded(relativeDir:String, excludes:Array<String>):Bool {
+		var dir = normalize(relativeDir);
+		for (exclude in excludes) {
+			if (dir == exclude || dir.startsWith(exclude + "/")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	Says whether discovery walks into a folder. Hidden folders such as `.git` are
 	never walked, since a Haxe package name cannot start with a dot.
 
