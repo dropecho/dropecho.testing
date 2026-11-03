@@ -5,7 +5,13 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 jobs:
   ci:
     uses: dropecho/.github/.github/workflows/haxe-ci.yml@main
+    with:
+      # Oldest supported (the macros need Haxe 4.2+), the pinned default, and the latest release.
+      haxe-versions: '["4.2.5", "4.3.0", "4.3.7"]'
     secrets: inherit

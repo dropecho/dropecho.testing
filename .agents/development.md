@@ -63,7 +63,11 @@ haxelib run dropecho.testing setup
 CI runs via GitHub Actions, delegating to the shared workflow:
 `.github/workflows/haxe-ci.yml` at `dropecho/.github`
 
-Triggers: push to `main`, manual dispatch (`workflow_dispatch`).
+Triggers: push to `main`, pull requests to `main`, manual dispatch (`workflow_dispatch`).
+
+Tests run on Haxe 4.2.5, 4.3.0 and 4.3.7 (set by `haxe-versions` in `ci.yml`). Haxe 4.1
+is not supported: the macros use the 4.2 `TDClass` signature. The release job runs only on
+`main`, never for pull requests.
 
 ## Release
 
