@@ -1,15 +1,8 @@
 package dropecho.testing;
 
-import sys.io.Process;
 import utest.Assert;
 
 using StringTools;
-
-/** What a compiled fixture printed, and the exit code it ended with. **/
-typedef FixtureRun = {
-	output:String,
-	exitCode:Int,
-}
 
 /**
 Builds the fixture projects in `test/fixtures` with `AutoTest` as main and checks
@@ -19,7 +12,7 @@ class ReportModeTests extends utest.Test {
 	static inline var SUMMARY = "results:";
 
 	function testDefaultHidesSummaryAndPassingResults() {
-		var run = runFixture("passing", []);
+		var run = Fixture.run("passing", []);
 
 		Assert.equals(0, run.exitCode);
 		Assert.isFalse(run.output.contains(SUMMARY));
@@ -27,7 +20,7 @@ class ReportModeTests extends utest.Test {
 	}
 
 	function testDefaultStillShowsFailures() {
-		var run = runFixture("failing", []);
+		var run = Fixture.run("failing", []);
 
 		Assert.equals(1, run.exitCode);
 		Assert.isTrue(run.output.contains("testFails: FAILURE"));
@@ -35,7 +28,7 @@ class ReportModeTests extends utest.Test {
 	}
 
 	function testShowHeadersShowsSummaryButHidesPassingResults() {
-		var run = runFixture("passing", ["show_headers"]);
+		var run = Fixture.run("passing", ["show_headers"]);
 
 		Assert.equals(0, run.exitCode);
 		Assert.isTrue(run.output.contains(SUMMARY));
@@ -43,7 +36,7 @@ class ReportModeTests extends utest.Test {
 	}
 
 	function testShowHeadersStillShowsFailures() {
-		var run = runFixture("failing", ["show_headers"]);
+		var run = Fixture.run("failing", ["show_headers"]);
 
 		Assert.equals(1, run.exitCode);
 		Assert.isTrue(run.output.contains(SUMMARY));
@@ -51,7 +44,7 @@ class ReportModeTests extends utest.Test {
 	}
 
 	function testVerboseShowsSummaryAndPassingResults() {
-		var run = runFixture("passing", ["verbose"]);
+		var run = Fixture.run("passing", ["verbose"]);
 
 		Assert.equals(0, run.exitCode);
 		Assert.isTrue(run.output.contains(SUMMARY));
@@ -59,42 +52,15 @@ class ReportModeTests extends utest.Test {
 	}
 
 	function testVerboseWinsOverShowHeaders() {
-		var run = runFixture("passing", ["show_headers", "verbose"]);
+		var run = Fixture.run("passing", ["show_headers", "verbose"]);
 
 		Assert.isTrue(run.output.contains("testPasses: OK"));
 	}
 
 	function testDiscoversSuitesInSubpackages() {
-		var run = runFixture("passing", ["verbose"]);
+		var run = Fixture.run("passing", ["verbose"]);
 
 		Assert.isTrue(run.output.contains("nested.NestedTests"));
 		Assert.isTrue(run.output.contains("testNestedPasses: OK"));
-	}
-
-	/**
-	Compiles and runs one fixture on the eval interpreter.
-
-	@param fixture The folder name under `test/fixtures`.
-	@param defines The `-D` flags to build it with.
-	@return The fixture's combined output and its exit code.
-	**/
-	static function runFixture(fixture:String, defines:Array<String>):FixtureRun {
-		var args = [
-			"--class-path", "src",
-			"--class-path", 'test/fixtures/$fixture',
-			"--library", "utest",
-			"--main", "dropecho.testing.AutoTest",
-			"--interp",
-		];
-		for (define in defines) {
-			args = args.concat(["-D", define]);
-		}
-
-		var process = new Process("haxe", args);
-		var output = process.stdout.readAll().toString() + process.stderr.readAll().toString();
-		var exitCode = process.exitCode();
-		process.close();
-
-		return {output: output, exitCode: exitCode};
 	}
 }
