@@ -24,7 +24,7 @@ class IncludeTestsMacro {
 			case UTest:
 				UTestIncludeMacros.BuiltUTestMain();
 			default:
-				var error = "No or unsupported test lib detected. Try including buddy, utest or munit.";
+				var error = "No supported test library found. Add --library utest or --library buddy.";
 				Context.error(error, Context.currentPos());
 		}
 

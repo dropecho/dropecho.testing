@@ -26,7 +26,7 @@ class BuddyIncludeMacros {
 						params: [],
 						expr: macro {
 							var suites = $a{suites};
-							var runner = new buddy.SuitesRunner(suites, null);
+							var runner = new buddy.SuitesRunner(suites, new dropecho.testing.BuddyReporter());
 							runner.run().then(_ -> {
 								#if instrument
                 // End instrumentation when manually running tests.
@@ -34,7 +34,7 @@ class BuddyIncludeMacros {
 								instrument.profiler.Profiler.endProfiler();
 								#end
 
-								Sys.exit(runner.statusCode());
+								dropecho.testing.ReportOutput.exit(runner.statusCode());
 							});
 						},
 						args: []

@@ -22,8 +22,11 @@
 | `dropecho_testing_suite` | Skips auto-discovery; uses the named type as the test suite instead |
 | `instrument` | Enables coverage and profiler shutdown hooks in generated `main()` |
 | `dropecho_testing_exclude` | Comma-separated folders discovery skips, each relative to the classpath root being scanned and matched by whole segments (`test` skips `test/fixtures`, not `testing`) |
-| `show_headers` | UTest only: prints the results summary, still hides passing tests |
-| `verbose` | UTest only: prints the summary and every passing test (wins over `show_headers`) |
+| `dropecho_testing_lib` | `utest` or `buddy`: which library to use when both are on the classpath (default: Buddy) |
+| `show_headers` | Prints a results summary block; still hides passing tests (UTest and Buddy) |
+| `verbose` | Prints the summary block and every test; wins over `show_headers` (UTest and Buddy) |
+
+Without `show_headers` or `verbose`, runs print only failures and a one-line summary.
 
 ## Configuration File
 

@@ -9,21 +9,25 @@ Builds the fixture projects in `test/fixtures` with `AutoTest` as main and check
 what the generated UTest runner prints under each output define.
 **/
 class ReportModeTests extends utest.Test {
-	static inline var SUMMARY = "results:";
+	// Only the full summary block has this line (utest's own spelling).
+	static inline var SUMMARY = "assertations:";
 
-	function testDefaultHidesSummaryAndPassingResults() {
+	function testDefaultPrintsOnlyAOneLineSummaryWhenAllPass() {
 		var run = Fixture.run("passing", []);
+		var lines = run.output.trim().split("\n");
 
 		Assert.equals(0, run.exitCode);
-		Assert.isFalse(run.output.contains(SUMMARY));
-		Assert.isFalse(run.output.contains("testPasses"));
+		Assert.equals(1, lines.length);
+		Assert.isTrue(lines[0].startsWith("results: ALL TESTS OK"));
+		Assert.isTrue(lines[0].contains("assertions: 2"));
 	}
 
-	function testDefaultStillShowsFailures() {
+	function testDefaultShowsFailuresAndTheSummaryLine() {
 		var run = Fixture.run("failing", []);
 
 		Assert.equals(1, run.exitCode);
 		Assert.isTrue(run.output.contains("testFails: FAILURE"));
+		Assert.isTrue(run.output.contains("results: SOME TESTS FAILURES"));
 		Assert.isFalse(run.output.contains(SUMMARY));
 	}
 
