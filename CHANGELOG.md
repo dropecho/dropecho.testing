@@ -1,3 +1,21 @@
+# [1.7.0](https://github.com/dropecho/dropecho.testing/compare/1.6.0...1.7.0) (2026-11-03)
+
+
+### Bug Fixes
+
+* **buddy:** let the generated runner compile for JS without hxnodejs ([21709e9](https://github.com/dropecho/dropecho.testing/commit/21709e9c3fe61ebb0c6d8a1a50d002c847b275fe))
+* **utest:** print a one-line summary instead of an empty trace line ([bd4fe02](https://github.com/dropecho/dropecho.testing/commit/bd4fe0264b2e27396377cff998c17b73ff8c695e)), closes [#5](https://github.com/dropecho/dropecho.testing/issues/5)
+* **discovery:** skip absolute Windows classpaths and accept backslash paths ([ce1ac74](https://github.com/dropecho/dropecho.testing/commit/ce1ac741bd7de55631cd92df7bcd1b98ee253511))
+* stop suggesting munit when no test library is found ([e7f6862](https://github.com/dropecho/dropecho.testing/commit/e7f68625bedb8094f8bbf367e61170f2b4cc8277))
+
+
+### Features
+
+* **cli:** add --verbose/--show-headers flags and fix runner bugs ([db72d74](https://github.com/dropecho/dropecho.testing/commit/db72d741cbc26d47ef4f90ecff51f4a882d4a5bd))
+* **discovery:** add dropecho_testing_exclude to skip folders ([a59ccf0](https://github.com/dropecho/dropecho.testing/commit/a59ccf0f6e3f9421b1ae0f9a880267bd1a7f6949))
+* choose the test library with -D dropecho_testing_lib ([7290889](https://github.com/dropecho/dropecho.testing/commit/72908894be82fe7bf2b0e2e1ceda89a19c45cc56))
+* **buddy:** support the verbose and show_headers output modes ([721ee33](https://github.com/dropecho/dropecho.testing/commit/721ee3349884347ce17f3799e50dda142bb8c155))
+
 # [1.6.0](https://github.com/dropecho/dropecho.testing/compare/1.5.3...1.6.0) (2026-05-13)
 
 
