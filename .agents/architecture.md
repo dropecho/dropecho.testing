@@ -9,6 +9,9 @@ src/dropecho/testing/
 ├── DetectTestLib.hx       # Detects available test framework at compile time
 ├── BuddyIncludeMacros.hx # Generates TestSuites class for Buddy framework
 ├── UTestIncludeMacros.hx # Generates TestSuites class for UTest framework
+├── UTestReport.hx         # Runtime: prints UTest results per output mode
+├── BuddyReporter.hx       # Runtime: prints Buddy results per output mode
+├── ReportOutput.hx        # Runtime: printing, summary line and exit shared by both reports
 └── Common.hx              # Shared macro utilities: path parsing, file discovery, expr generation
 
 tools/
@@ -28,22 +31,29 @@ Central orchestrator. `buildTests()` is the `@:build` macro entry point:
 4. Injects a `main()` field into `AutoTest` that delegates to `TestSuites.main()`
 
 ### `DetectTestLib` (`src/dropecho/testing/DetectTestLib.hx`)
-Returns `DetectedTestLib` enum: `None | Buddy | UTest`. Uses `haxe.macro.Context.getType()` to probe class availability. Run inside `#if macro` context.
+Returns `DetectedTestLib` enum: `None | Buddy | UTest`. Uses `haxe.macro.Context.getType()` to probe class availability. Run inside `#if macro` context. `-D dropecho_testing_lib=utest|buddy` picks the library; without it, Buddy wins when both are present. An unknown value or a missing library is a compile error.
 
 ### `BuddyIncludeMacros` (`src/dropecho/testing/BuddyIncludeMacros.hx`)
 Generates a synthetic `TestSuites` class whose `main()`:
 - Instantiates all discovered `*Tests` classes
-- Passes them to `buddy.SuitesRunner`
+- Passes them to `buddy.SuitesRunner` with a `BuddyReporter`
 - Hooks instrumentation shutdown (`#if instrument`)
-- Exits with the runner's status code
+- Exits with the runner's status code via `ReportOutput.exit`
 
 ### `UTestIncludeMacros` (`src/dropecho/testing/UTestIncludeMacros.hx`)
 Generates a synthetic `TestSuites` class whose `main()`:
 - Creates `utest.Runner`
 - Adds each discovered test suite via `runner.addCase()`
 - Hooks instrumentation shutdown (`#if instrument`)
-- Creates a UI report via `utest.ui.Report.create(runner)`
+- Attaches a `UTestReport` to the runner
 - Calls `runner.run()`
+
+### `UTestReport` and `BuddyReporter` (runtime)
+The generated runners print through these, so both libraries share the output modes:
+- Default: failures, then one line, e.g. `results: ALL TESTS OK (assertions: 2, successes: 2, failures: 0, errors: 0)` or `results: ALL TESTS OK (specs: 2, failures: 0, pending: 0)`
+- `show_headers`: a summary block, then failures
+- `verbose`: a summary block, then every test
+They are guarded by `#if (utest && !macro)` / `#if (buddy && !macro)`, so each compiles only when its library is present. Code that branches on the target (`#if sys`, `#if js`) belongs in these runtime classes: inside `macro { }` reification, `#if` is checked against the macro context, where `sys` is always defined.
 
 ### `Common` (`src/dropecho/testing/Common.hx`)
 Macro-only utilities:
