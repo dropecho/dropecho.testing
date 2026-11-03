@@ -1,7 +1,13 @@
 --class-path src
 --class-path test/src
+# The repo root holds the CLI's tests in tools/.
+--class-path .
 
 --library utest
+
+# Scanning the repo root would also find the fixtures and this suite's own
+# files under test/, so leave those and the build folders out.
+--define dropecho_testing_exclude=test,src,node_modules,haxe_libraries,artifacts,dump
 
 # Print the results summary so CI logs show what ran.
 --define show_headers
