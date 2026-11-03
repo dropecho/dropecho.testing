@@ -20,6 +20,16 @@ haxelib run dropecho.testing
 haxe --main dropecho.testing.AutoTest test.hxml
 ```
 
+## This Repo's Own Tests
+
+`npm test` builds `test.hxml`, which uses `AutoTest` on `test/src`. The suites there
+compile the sample projects in `test/fixtures/<name>/` with `haxe --interp` and check
+what the generated runner prints and its exit code.
+
+- Keep fixtures out of `test/src`, or `AutoTest` will discover them as this repo's tests.
+- Haxe libraries are managed by lix (`.haxerc`, `haxe_libraries/`); add one with
+  `lix install haxelib:<name>`.
+
 ## Adding Support for a New Test Framework
 
 1. Add a value to the `DetectedTestLib` enum in `DetectTestLib.hx`

@@ -1,5 +1,5 @@
 --class-path src
---class-path .
+--class-path test/src
 
 --library utest
 
