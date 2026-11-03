@@ -4,7 +4,10 @@ import sys.io.Process;
 
 /** What a compiled fixture printed, and the exit code it ended with. **/
 typedef FixtureRun = {
+	/** Everything printed, including compiler errors and warnings. **/
 	output:String,
+	/** Only what the fixture program printed; compiler warnings go to stderr. **/
+	stdout:String,
 	exitCode:Int,
 }
 
@@ -16,7 +19,7 @@ class Fixture {
 	@param name The folder name under `test/fixtures`.
 	@param defines The `-D` flags to build it with.
 	@param libraries The `--library` flags to build it with; defaults to utest.
-	@return The fixture's combined output and its exit code.
+	@return The fixture's output (combined and stdout only) and its exit code.
 	**/
 	public static function run(name:String, ?defines:Array<String>, ?libraries:Array<String>):FixtureRun {
 		var args = ["--class-path", "src", "--class-path", 'test/fixtures/$name'];
@@ -29,10 +32,11 @@ class Fixture {
 		args = args.concat(["--main", "dropecho.testing.AutoTest", "--interp"]);
 
 		var process = new Process("haxe", args);
-		var output = process.stdout.readAll().toString() + process.stderr.readAll().toString();
+		var stdout = process.stdout.readAll().toString();
+		var output = stdout + process.stderr.readAll().toString();
 		var exitCode = process.exitCode();
 		process.close();
 
-		return {output: output, exitCode: exitCode};
+		return {output: output, stdout: stdout, exitCode: exitCode};
 	}
 }

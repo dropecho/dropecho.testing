@@ -15,7 +15,8 @@ class BuddyReportModeTests extends utest.Test {
 
 	function testDefaultPrintsOnlyAOneLineSummaryWhenAllPass() {
 		var run = Fixture.run("buddy-passing", [], BUDDY);
-		var lines = run.output.trim().split("\n");
+		// stdout only: newer Haxe versions print deprecation warnings from the libraries to stderr.
+		var lines = run.stdout.trim().split("\n");
 
 		Assert.equals(0, run.exitCode);
 		Assert.equals(1, lines.length);
