@@ -1,6 +1,7 @@
 package dropecho.testing;
 
 #if macro
+import haxe.io.Path;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import sys.FileSystem as FS;
@@ -13,49 +14,81 @@ typedef SuitesData = {
 }
 
 class Common {
+	/**
+	Finds every test suite on the project's classpaths.
+
+	@return One `new Suite()` expression per discovered `*Tests.hx` file.
+	**/
+	public static function collectSuites():Array<Expr> {
+		var suites = [];
+
+		for (root in extractPath()) {
+			var found = extractTestSuites(root, root, {suites: []});
+			for (file in found.suites) {
+				suites.push(extractExpr(root, file));
+			}
+		}
+
+		return suites;
+	}
+
+	/**
+	Lists the classpaths discovery scans: the relative ones, which belong to the project.
+
+	@return The classpath entries, trimmed.
+	**/
 	public static function extractPath():Array<String> {
 		var paths = [];
-		var clsPath = Context.getClassPath();
-		for (c in clsPath) {
-			var t = c.trim();
-			if (t.length > 0 && t.charAt(0) != "#" && t.charAt(0) != "/")
-				paths.push(t);
+		for (classPath in Context.getClassPath()) {
+			if (SuitePaths.isScanned(classPath)) {
+				paths.push(classPath.trim());
+			}
 		}
 
 		return paths;
 	}
 
-	public static function extractExpr(base:String, path:String):Expr {
-		if (path.startsWith(base)) {
-			path = path.substring(base.length, path.length - 3);
-			path = ~/\//g.replace(path, ".");
+	/**
+	Builds the `new` expression for one suite file.
 
-			var parts = path.split('.');
-			var typePath = {
-				name: parts.pop(),
-				pack: parts,
-			}
-			return macro new $typePath();
+	@param base The classpath root the file was found under.
+	@param path The suite file's path, starting with `base`.
+	@return An expression constructing the suite.
+	**/
+	public static function extractExpr(base:String, path:String):Expr {
+		var suite = SuitePaths.typePath(base, path);
+		if (suite == null) {
+			Context.error('Invalid test suite: $path', Context.currentPos());
+			return macro null;
 		}
 
-		Context.error("Invalid test suite: $path", Context.currentPos());
-		return macro null;
+		var typePath:TypePath = {pack: suite.pack, name: suite.name};
+		return macro new $typePath();
 	}
 
+	/**
+	Walks a folder and collects the paths of its suite files.
+
+	@param root The classpath root the walk started from.
+	@param dir The folder to walk, under `root`.
+	@param data Collects the suite paths found.
+	@return `data`, with the suites under `dir` added.
+	**/
 	public static function extractTestSuites(root:String, dir:String, data:SuitesData):SuitesData {
-		if (FS.isDirectory(dir)) {
-			var entries = FS.readDirectory(dir);
+		if (!FS.isDirectory(dir)) {
+			return data;
+		}
 
-			for (entry in entries) {
-				var path = dir + entry;
+		var folder = Path.addTrailingSlash(dir);
+		for (entry in FS.readDirectory(folder)) {
+			var path = folder + entry;
 
-				if (FS.isDirectory(path)) {
-					extractTestSuites(root, path + "/", data);
-				} else {
-					if (entry.length > 8 && entry.endsWith("Tests.hx")) {
-						data.suites.push(path);
-					}
+			if (FS.isDirectory(path)) {
+				if (SuitePaths.isWalked(entry)) {
+					extractTestSuites(root, path, data);
 				}
+			} else if (SuitePaths.isSuiteFile(entry)) {
+				data.suites.push(path);
 			}
 		}
 
