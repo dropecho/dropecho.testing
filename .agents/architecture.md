@@ -54,7 +54,7 @@ Macro-only utilities:
 - `extractExpr(base, path)` — converts a filesystem path like `src/foo/BarTests.hx` into a macro `Expr` for `new foo.BarTests()`
 
 ### `tools/Run.hx`
-Invoked by `haxelib run dropecho.testing`. Reads `.dropecho.testing.json`, compiles using `haxe --main=dropecho.testing.AutoTest <hxml>`, then runs compiled artifacts for each target (js→node, neko, python→python3, hl, etc.). Accumulates exit codes from all targets.
+Invoked by `haxelib run dropecho.testing`. Reads `.dropecho.testing.json` over the defaults, compiles using `haxe --main dropecho.testing.AutoTest <hxml>`, then runs the compiled output of each target (js→node, neko, python→python3, hl, etc.). Stops with a non-zero exit when the build fails; otherwise returns the last failing target's exit code, or 0.
 
 ## Compile-Time Data Flow
 
@@ -76,11 +76,13 @@ Invoked by `haxelib run dropecho.testing`. Reads `.dropecho.testing.json`, compi
 ```
 haxelib run dropecho.testing
   → Run.main()
-    → LoadOrMakeConfig()                      # reads .dropecho.testing.json
-    → BuildTests(path)                        # calls: haxe --main=dropecho.testing.AutoTest test.hxml
-    → GetTargets(hxmlPath)                    # parses hxml for --js, --neko, etc.
-    → for each target: exec runner binary     # node/neko/python3/hl/etc.
-    → aggregate + return exit codes
+    → ParseArgs()                             # command (run/setup/help) and --verbose/--show-headers
+    → LoadConfig() → MergeConfig()            # .dropecho.testing.json over DefaultConfig()
+    → ParseTargets(hxml) → RunnerFor(target)  # parses hxml for --js, --neko, etc.; fails on none or unsupported
+    → IsSafeToClean() → CleanPath()           # deletes old output, only inside the project
+    → haxe BuildArgs(...)                     # stops here if the build fails
+    → for each target: exec runner            # node/neko/python3/hl/etc.
+    → return the last failing exit code, or 0
 ```
 
 ## Key Design Patterns
