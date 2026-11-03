@@ -52,7 +52,7 @@ class BuddyIncludeMacros {
 								instrument.profiler.Profiler.endProfiler();
 								#end
 
-								Sys.exit(runner.statusCode());
+								dropecho.testing.ReportOutput.exit(runner.statusCode());
 							});
 						},
 						args: []

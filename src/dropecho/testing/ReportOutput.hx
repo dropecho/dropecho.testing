@@ -12,6 +12,19 @@ class ReportOutput {
 	}
 
 	/**
+	Ends the process with an exit code, on sys targets and on Node.js.
+
+	@param code The exit code; non-zero means some tests failed.
+	**/
+	public static function exit(code:Int) {
+		#if sys
+		Sys.exit(code);
+		#elseif js
+		js.Syntax.code("if (typeof process != 'undefined') process.exit({0})", code);
+		#end
+	}
+
+	/**
 	Builds the one-line summary printed in the default output mode.
 
 	@param ok Whether every test passed.
