@@ -9,26 +9,8 @@ using StringTools;
 using haxe.macro.Tools;
 
 class BuddyIncludeMacros {
-	static var dotReg = ~/(\.)/g;
-	static var hxExt = ~/(\.hx$)/;
-
 	public static function BuildBuddyMain() {
-		var paths = Common.extractPath();
-
-		if (paths == null) {
-			Context.error("Could not find the sources directory", Context.currentPos());
-		}
-
-		var suites = [];
-		for (path in paths) {
-			var suitesData = Common.extractTestSuites(path, path, {
-				suites: [],
-			});
-
-			for (s in suitesData.suites) {
-				suites.push(Common.extractExpr(path, s));
-			}
-		}
+		var suites = Common.collectSuites();
 
 		Context.defineType({
 			name: "TestSuites",
