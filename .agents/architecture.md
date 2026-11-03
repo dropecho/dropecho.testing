@@ -9,7 +9,8 @@ src/dropecho/testing/
 ├── DetectTestLib.hx       # Detects available test framework at compile time
 ├── BuddyIncludeMacros.hx # Generates TestSuites class for Buddy framework
 ├── UTestIncludeMacros.hx # Generates TestSuites class for UTest framework
-└── Common.hx              # Shared macro utilities: path parsing, file discovery, expr generation
+├── Common.hx              # Shared macro utilities: suite discovery and expr generation
+└── SuitePaths.hx          # Path rules for discovery (no macro code, unit tested)
 
 tools/
 └── Run.hx                 # haxelib run entry point — CLI test runner across targets
@@ -47,8 +48,9 @@ Generates a synthetic `TestSuites` class whose `main()`:
 
 ### `Common` (`src/dropecho/testing/Common.hx`)
 Macro-only utilities:
-- `extractPath()` — reads `Context.getClassPath()`, filters comments and absolute paths
-- `extractTestSuites(root, dir, data)` — recursively walks directories, collects `*Tests.hx` paths
+- `collectSuites()` — runs the steps below for every classpath and returns the suite exprs; both builders call it
+- `extractPath()` — reads `Context.getClassPath()`, filters comments and absolute paths (Unix and Windows)
+- `extractTestSuites(root, dir, data, ?excludes)` — recursively walks directories, skipping hidden and excluded ones, collects `*Tests.hx` paths
 - `extractExpr(base, path)` — converts a filesystem path like `src/foo/BarTests.hx` into a macro `Expr` for `new foo.BarTests()`
 
 ### `tools/Run.hx`
@@ -61,6 +63,7 @@ Invoked by `haxelib run dropecho.testing`. Reads `.dropecho.testing.json`, compi
   → IncludeTestsMacro.buildTests()
     → DetectTestLib.detectTestLib()           # probes for buddy.Buddy or utest.Runner
     → BuddyIncludeMacros.BuildBuddyMain()     # or UTestIncludeMacros.BuiltUTestMain()
+      → Common.collectSuites()                # shared by both builders
       → Common.extractPath()                  # reads compiler classpaths
       → Common.extractTestSuites()            # recursive *Tests.hx file scan
       → Common.extractExpr()                  # path → new Foo.BarTests() expr

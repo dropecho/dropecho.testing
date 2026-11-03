@@ -22,10 +22,14 @@ haxe --main dropecho.testing.AutoTest test.hxml
 
 ## This Repo's Own Tests
 
-`npm test` builds `test.hxml`, which uses `AutoTest` on `test/src`. The suites there
-compile the sample projects in `test/fixtures/<name>/` with `haxe --interp` and check
-what the generated runner prints and its exit code.
+`npm test` builds `test.hxml`, which uses `AutoTest` on `test/src` and on the repo
+root (for the CLI's tests in `tools/RunTests.hx`). It excludes `test`, `src` and the
+build folders from the root scan with `dropecho_testing_exclude`.
 
+- Suites in `test/src` compile the sample projects in `test/fixtures/<name>/` through the
+  shared `Fixture.run` helper, using `haxe --interp`, and check what the generated runner
+  prints and its exit code.
+- Pure path rules live in `SuitePaths.hx` (no macro code), so they are unit tested at runtime.
 - Keep fixtures out of `test/src`, or `AutoTest` will discover them as this repo's tests.
 - Haxe libraries are managed by lix (`.haxerc`, `haxe_libraries/`); add one with
   `lix install haxelib:<name>`.

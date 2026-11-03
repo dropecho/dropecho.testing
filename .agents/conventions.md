@@ -3,7 +3,7 @@
 ## Test File Naming
 
 - Test files **must** end in `Tests.hx` (e.g., `MathTests.hx`, `ParserTests.hx`)
-- Discovery is recursive from any directory on the compiler classpath
+- Discovery is recursive from every relative directory on the compiler classpath; absolute ones (std, installed libraries) and hidden folders such as `.git` are skipped
 - The file's path relative to the classpath root determines the Haxe type path:
   - `src/math/MathTests.hx` → `new math.MathTests()`
   - `src/ParserTests.hx` → `new ParserTests()`
@@ -21,6 +21,7 @@
 |--------|--------|
 | `dropecho_testing_suite` | Skips auto-discovery; uses the named type as the test suite instead |
 | `instrument` | Enables coverage and profiler shutdown hooks in generated `main()` |
+| `dropecho_testing_exclude` | Comma-separated folders discovery skips, each relative to the classpath root being scanned and matched by whole segments (`test` skips `test/fixtures`, not `testing`) |
 | `show_headers` | UTest only: prints the results summary, still hides passing tests |
 | `verbose` | UTest only: prints the summary and every passing test (wins over `show_headers`) |
 
