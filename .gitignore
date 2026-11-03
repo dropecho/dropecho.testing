@@ -4,3 +4,7 @@ build
 report
 dist
 artifacts
+lcov.info
+*.swp
+.temp
+.vim/

@@ -21,6 +21,8 @@
 |--------|--------|
 | `dropecho_testing_suite` | Skips auto-discovery; uses the named type as the test suite instead |
 | `instrument` | Enables coverage and profiler shutdown hooks in generated `main()` |
+| `show_headers` | UTest only: prints the results summary, still hides passing tests |
+| `verbose` | UTest only: prints the summary and every passing test (wins over `show_headers`) |
 
 ## Configuration File
 

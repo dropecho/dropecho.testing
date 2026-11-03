@@ -1,6 +1,9 @@
 --class-path src
---class-path .
+--class-path test/src
 
 --library utest
+
+# Print the results summary so CI logs show what ran.
+--define show_headers
 
 --neko artifacts/test/run_tests.n

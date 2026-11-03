@@ -6,10 +6,12 @@
   "repository": "github:dropecho/dropecho.testing",
   "license": "MIT",
   "scripts": {
+    "prepare": "lix download",
     "build": "echo No build.",
     "test": "haxe --main dropecho.testing.AutoTest test.hxml && neko artifacts/test/run_tests.n"
   },
   "devDependencies": {
+    "lix": "^16.0.2",
     "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/exec": "^6.0.3",
