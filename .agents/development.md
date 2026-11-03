@@ -40,9 +40,9 @@ what the generated runner prints and its exit code.
 ## Adding a New Compilation Target
 
 In `tools/Run.hx`:
-1. Add the target name to `TargetType` abstract enum
-2. Add the runner CLI command to `TargetRunner` abstract enum
-3. Add the mapping in `GetTargetRunner()` (or equivalent switch)
+1. Add the target name to the `TargetType` enum abstract and the `targets` list
+2. Add the runner program to the `TargetRunner` enum abstract
+3. Add the mapping in `RunnerFor()`, and a case to `testRunnerForRunsEachTarget` in `tools/RunTests.hx`
 
 ## Instrumentation Integration
 

@@ -26,17 +26,34 @@
 
 ## Configuration File
 
-`.dropecho.testing.json` (project root, created by `haxelib run dropecho.testing setup`):
+`.dropecho.testing.json` (project root, created by `haxelib run dropecho.testing setup`). Every field is optional; anything left out uses the default shown:
 ```json
 {
   "hxml": "test.hxml",
+  "root_package": null,
   "instrument": {
     "coverage": false,
     "profiler": false,
-    "coverage_reporter": "lcov"
+    "coverage_reporter": null,
+    "coverage_paths": ["src"]
   }
 }
 ```
+
+- `instrument` is only added to the build when `coverage` or `profiler` is `true`.
+- `root_package` limits instrumentation to one package; `null` instruments everything under `coverage_paths`.
+- `coverage_reporter` takes a short name (`lcov`, `console-summary`) or the full define (`coverage-lcov-reporter`).
+
+## CLI
+
+```
+haxelib run dropecho.testing [run|setup|help] [--verbose] [--show-headers]
+```
+
+- `run` (default) builds the hxml with `--main dropecho.testing.AutoTest` and runs each target.
+- `--verbose` / `--show-headers` add `-D verbose` / `-D show_headers` to the build.
+- Unknown arguments print usage and exit 1.
+- The run exits non-zero when the build fails (nothing runs), when the hxml has no targets, when a target can't be run, or when a target path is outside the project or is the project itself (it is deleted before each build).
 
 ## hxml Conventions
 
@@ -48,15 +65,18 @@
 
 | Haxe Target | Runner CLI |
 |-------------|------------|
-| `js` | `node` |
-| `neko` | `neko` |
-| `cpp` | direct binary |
-| `java` | `java -jar` |
-| `cs` | `mono` |
-| `python` | `python3` |
-| `php` | `php` |
-| `hl` | `hl` |
-| `lua` | `lua` |
+| `js` | `node <file>` |
+| `neko` | `neko <file>` |
+| `cpp` | `<dir>/AutoTest` (`AutoTest.exe` on Windows) |
+| `jvm` | `java -jar <file>` |
+| `java` | `java -jar <dir>/AutoTest.jar` |
+| `cs` | `<dir>/bin/AutoTest.exe` on Windows; otherwise `mono`, or `dotnet` without mono |
+| `python` | `python3 <file>` |
+| `php` | `php <dir>/index.php` |
+| `hl` | `hl <file>` |
+| `lua` | `lua <file>` |
+| `interp` | none; the tests run during the build |
+| `swf`, `as3` | not supported; the run fails |
 
 ## Release Process
 
