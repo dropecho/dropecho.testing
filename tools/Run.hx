@@ -91,6 +91,7 @@ class Run {
 	static inline var MAIN = "dropecho.testing.AutoTest";
 	static inline var MAIN_CLASS = "AutoTest";
 	static inline var CONFIG_FILE = ".dropecho.testing.json";
+	static inline var FILTER_DEFINE = "dropecho_testing_filter";
 
 	static final targets:Array<TargetType> = [js, neko, java, jvm, cpp, cs, python, php, hl, lua, interp, swf, as3];
 
@@ -105,6 +106,8 @@ class Run {
 		"Options for run:",
 		"  --verbose       Show the summary and every passing test (-D verbose).",
 		"  --show-headers  Show the summary but hide passing tests (-D show_headers).",
+		"  --filter <re>   Run only tests whose full name matches the regular expression",
+		"                  (-D dropecho_testing_filter). Fails when nothing matches.",
 	].join("\n");
 
 	public static function main() {
@@ -160,14 +163,28 @@ class Run {
 	public static function ParseArgs(args:Array<String>):ParsedArgs {
 		var command:Null<CliCommand> = null;
 		var defines = [];
+		var filter:Null<String> = null;
 
-		for (arg in args) {
+		var i = 0;
+		while (i < args.length) {
+			var arg = args[i];
+			i++;
+
 			var next:Null<CliCommand> = null;
+			var filterValue:Null<String> = null;
 			switch (arg) {
 				case "--verbose":
 					defines.push("verbose");
 				case "--show-headers":
 					defines.push("show_headers");
+				case "--filter":
+					if (i >= args.length) {
+						return Invalid("--filter needs a pattern, such as --filter MathTests.");
+					}
+					filterValue = args[i];
+					i++;
+				case _ if (arg.startsWith("--filter=")):
+					filterValue = arg.substr("--filter=".length);
 				case "help" | "--help" | "-h":
 					return Parsed({command: Help, defines: []});
 				case "setup":
@@ -177,6 +194,18 @@ class Run {
 				case _:
 					return Invalid('Unknown argument: $arg');
 			}
+
+			if (filterValue != null) {
+				if (filter != null) {
+					return Invalid("Give --filter only once. To match several names, use one pattern such as A|B.");
+				}
+				if (filterValue.length == 0 || filterValue.startsWith("--")) {
+					return Invalid("--filter needs a pattern, such as --filter MathTests.");
+				}
+				filter = filterValue;
+				defines.push('$FILTER_DEFINE=$filterValue');
+			}
+
 			if (next != null) {
 				if (command != null && command != next) {
 					return Invalid("Give only one command.");
@@ -186,7 +215,7 @@ class Run {
 		}
 
 		if (command == Setup && defines.length > 0) {
-			return Invalid("--verbose and --show-headers only apply to run.");
+			return Invalid("--verbose, --show-headers and --filter only apply to run.");
 		}
 
 		return Parsed({command: command != null ? command : RunTests, defines: defines});
