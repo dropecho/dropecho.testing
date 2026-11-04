@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/dropecho/dropecho.testing/compare/1.7.0...1.7.1) (2026-11-04)
+
+
+### Bug Fixes
+
+* **docs:** skip test discovery in AutoTest when building docs ([1d2435e](https://github.com/dropecho/dropecho.testing/commit/1d2435e546b19a694fd4221152ae6fc71b4048b5))
+
 # [1.7.0](https://github.com/dropecho/dropecho.testing/compare/1.6.0...1.7.0) (2026-11-03)
 
 
