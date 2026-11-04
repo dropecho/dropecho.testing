@@ -94,7 +94,7 @@ class RunTests extends Test {
 
 	function testParseArgsDefaultsToRun() {
 		var request = requestOf([]);
-		Assert.equals(RunTests, request.command);
+		Assert.equals(CliCommand.RunTests, request.command);
 		Assert.same([], request.defines);
 	}
 
