@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "prepare": "lix download",
-    "build": "echo No build.",
-    "test": "haxe --main dropecho.testing.AutoTest test.hxml && neko artifacts/test/run_tests.n"
+    "build": "haxe build.hxml",
+    "test": "npm run build && haxe --main dropecho.testing.AutoTest test.hxml && neko artifacts/test/run_tests.n"
   },
   "devDependencies": {
     "lix": "^16.0.2",
