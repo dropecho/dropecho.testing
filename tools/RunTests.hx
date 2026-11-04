@@ -235,6 +235,40 @@ class RunTests extends Test {
 		Assert.isTrue(Run.RunnerFor(target(as3, "out/as3"), false, false) == Unsupported);
 	}
 
+	function testRunnerForPythonUsesTheChosenProgram() {
+		switch (Run.RunnerFor(target(python, "out/t.py"), true, false, "py")) {
+			case Command(runner, args):
+				Assert.equals("py", runner);
+				Assert.same(["out/t.py"], args);
+			case other:
+				Assert.fail('Expected a command, got $other');
+		}
+	}
+
+	function testRunnerForPythonDefaultsToPython3() {
+		assertCommand("python3", ["out/t.py"], target(python, "out/t.py"));
+	}
+
+	function testPythonCommandPrefersPython3OffWindows() {
+		Assert.equals("python3", Run.PythonCommand(false, installed(["python", "python3"])));
+		Assert.equals("python", Run.PythonCommand(false, installed(["python"])));
+	}
+
+	function testPythonCommandPrefersPythonThenPyOnWindows() {
+		Assert.equals("python", Run.PythonCommand(true, installed(["python3", "py", "python"])));
+		Assert.equals("py", Run.PythonCommand(true, installed(["python3", "py"])));
+		Assert.equals("python3", Run.PythonCommand(true, installed(["python3"])));
+	}
+
+	function testPythonCommandFallsBackToPython3WhenNoneIsFound() {
+		Assert.equals("python3", Run.PythonCommand(true, installed([])));
+		Assert.equals("python3", Run.PythonCommand(false, installed([])));
+	}
+
+	static function installed(programs:Array<String>):String->Bool {
+		return program -> programs.contains(program);
+	}
+
 	static function target(type:TargetType, path:String):TargetConfig {
 		return {target: type, path: path};
 	}
