@@ -12,6 +12,11 @@ class BuddyIncludeMacros {
 	public static function BuildBuddyMain() {
 		var suites = Common.collectSuites();
 
+		var filter = TestFilter.fromDefine();
+		var reporter = macro new dropecho.testing.BuddyReporter();
+		var newRunner = filter == null ? macro new buddy.SuitesRunner(suites, $reporter) : macro new dropecho.testing.FilteredSuitesRunner(suites,
+			$reporter, $v{filter});
+
 		Context.defineType({
 			name: "TestSuites",
 			pack: "dropecho.testing".split('.'),
@@ -26,7 +31,7 @@ class BuddyIncludeMacros {
 						params: [],
 						expr: macro {
 							var suites = $a{suites};
-							var runner = new buddy.SuitesRunner(suites, new dropecho.testing.BuddyReporter());
+							var runner = $newRunner;
 							runner.run().then(_ -> {
 								#if instrument
                 // End instrumentation when manually running tests.
