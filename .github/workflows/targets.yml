@@ -1,0 +1,72 @@
+name: Targets
+
+# Runs the sample project in test/e2e through the CLI on each target, the way
+# users run `haxelib run dropecho.testing`, so every runner is used for real.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  e2e:
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [neko, js, python, php, jvm, cpp, hl, lua]
+    runs-on: ubuntu-latest
+    name: e2e (${{ matrix.target }})
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Set up Haxe via lix
+        run: |
+          npx lix install haxe 4.3.7
+          npx lix use haxe 4.3.7
+          npx lix download
+
+      # Libraries and runtimes only some targets need.
+      - name: Install hxjava
+        if: matrix.target == 'jvm'
+        run: npx lix install haxelib:hxjava
+      - name: Install hxcpp
+        if: matrix.target == 'cpp'
+        run: npx lix install haxelib:hxcpp
+      - name: Install HashLink
+        if: matrix.target == 'hl'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # HashLink publishes Linux binaries only as a rolling "latest" build.
+          gh release download latest -R HaxeFoundation/hashlink -p '*linux-amd64.tar.gz' -D "$RUNNER_TEMP"
+          tar -xzf "$RUNNER_TEMP"/hashlink-*-linux-amd64.tar.gz -C "$RUNNER_TEMP"
+          dir="$(echo "$RUNNER_TEMP"/hashlink-*-linux-amd64)"
+          echo "$dir" >> "$GITHUB_PATH"
+          echo "LD_LIBRARY_PATH=$dir" >> "$GITHUB_ENV"
+      - name: Install Lua
+        if: matrix.target == 'lua'
+        uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: "5.4"
+      - name: Install LuaRocks
+        if: matrix.target == 'lua'
+        uses: leafo/gh-actions-luarocks@v6
+      - name: Install Haxe's Lua dependencies
+        if: matrix.target == 'lua'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpcre2-dev
+          luarocks install haxe-deps
+
+      - name: Run the sample tests through the CLI
+        run: test/e2e/run.sh ${{ matrix.target }}
