@@ -31,12 +31,29 @@ class Fixture {
 		}
 		args = args.concat(["--main", "dropecho.testing.AutoTest", "--interp"]);
 
-		var process = new Process("haxe", args);
+		var process = startHaxe(args);
 		var stdout = process.stdout.readAll().toString();
 		var output = stdout + process.stderr.readAll().toString();
 		var exitCode = process.exitCode();
 		process.close();
 
 		return {output: output, stdout: stdout, exitCode: exitCode};
+	}
+
+	/**
+	Starts `haxe` with the given arguments.
+
+	On Windows, lix installs `haxe` as a `haxe.cmd` script, which `Process` can't start
+	directly, so it goes through the shell with each argument quoted.
+
+	@param args The compiler arguments.
+	@return The running compiler.
+	**/
+	static function startHaxe(args:Array<String>):Process {
+		if (Sys.systemName() != "Windows") {
+			return new Process("haxe", args);
+		}
+		var line = ["haxe"].concat([for (arg in args) StringTools.quoteWinArg(arg, true)]).join(" ");
+		return new Process(line);
 	}
 }
