@@ -1,3 +1,17 @@
+# [1.8.0](https://github.com/dropecho/dropecho.testing/compare/1.7.1...1.8.0) (2026-11-04)
+
+
+### Bug Fixes
+
+* **cli:** pick the Python program at runtime instead of python3 ([c2be0b1](https://github.com/dropecho/dropecho.testing/commit/c2be0b165c6bafe5cba0457ff23e95e326f92ab3))
+* print report output with Sys.println on sys targets ([6c5a1a2](https://github.com/dropecho/dropecho.testing/commit/6c5a1a203e9a6169b00dfe66bb8f5a9cc9a3cb9b))
+
+
+### Features
+
+* **cli:** add --filter to pass dropecho_testing_filter to the build ([89fa66f](https://github.com/dropecho/dropecho.testing/commit/89fa66f2ccc13b1286fc418dd5d6be1ea6eabe29))
+* run only tests matching -D dropecho_testing_filter ([3232017](https://github.com/dropecho/dropecho.testing/commit/323201731414294adcc6140a7b7d64e35cb04ab6))
+
 ## [1.7.1](https://github.com/dropecho/dropecho.testing/compare/1.7.0...1.7.1) (2026-11-04)
 
 

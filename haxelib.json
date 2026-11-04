@@ -8,8 +8,8 @@
     "vantreeseba"
   ],
   "main": "tools.Run",
-  "version": "1.7.1",
-  "releasenote": "Release version 1.7.1. See CHANGELOG.md for details.",
+  "version": "1.8.0",
+  "releasenote": "Release version 1.8.0. See CHANGELOG.md for details.",
   "tags": [
     "test",
     "testing",
