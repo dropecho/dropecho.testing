@@ -12,6 +12,14 @@ class UTestIncludeMacros {
 	public static function BuiltUTestMain() {
 		var suites = Common.collectSuites();
 
+		// utest matches the pattern against `pack.Class.testName`.
+		var filter = TestFilter.fromDefine();
+		var applyFilter = filter == null ? macro {} : macro runner.globalPattern = new EReg($v{filter}, "");
+		var failWhenNothingMatches = filter == null ? macro {} : macro if (runner.length == 0) {
+			dropecho.testing.ReportOutput.noMatches($v{filter});
+			return;
+		};
+
 		Context.defineType({
 			name: "TestSuites",
 			pack: "dropecho.testing".split('.'),
@@ -25,10 +33,12 @@ class UTestIncludeMacros {
 						ret: null,
 						expr: macro {
 							var runner = new utest.Runner();
+							$applyFilter;
 
 							for (s in $a{suites}) {
 								runner.addCase(s);
 							}
+							$failWhenNothingMatches;
 
 							#if instrument
 							runner.onComplete.add(_ -> {
