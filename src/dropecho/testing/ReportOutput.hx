@@ -8,7 +8,12 @@ class ReportOutput {
 	@param text The text to print.
 	**/
 	public static function print(text:String) {
+		#if sys
+		// trace without a position still adds a prefix on some targets (hxcpp prints `?? `).
+		Sys.println(text);
+		#else
 		haxe.Log.trace(text, null);
+		#end
 	}
 
 	/**

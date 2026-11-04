@@ -1,0 +1,4 @@
+common.hxml
+
+--library hxcpp
+--cpp artifacts/cpp

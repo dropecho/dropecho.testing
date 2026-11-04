@@ -1,0 +1,3 @@
+common.hxml
+
+--js artifacts/tests.js

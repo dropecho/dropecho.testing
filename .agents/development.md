@@ -69,9 +69,18 @@ CI runs via GitHub Actions, delegating to the shared workflow:
 
 Triggers: push to `main`, pull requests to `main`, manual dispatch (`workflow_dispatch`).
 
-Tests run on Haxe 4.2.5, 4.3.0 and 4.3.7 (set by `haxe-versions` in `ci.yml`). Haxe 4.1
-is not supported: the macros use the 4.2 `TDClass` signature. The release job runs only on
-`main`, never for pull requests.
+Tests run on Haxe 4.2.5, 4.3.0 and 4.3.7, each on Ubuntu, Windows and macOS (set by
+`haxe-versions` and `os` in `ci.yml`). Haxe 4.1 is not supported: the macros use the 4.2
+`TDClass` signature. The release job runs only on `main`, never for pull requests.
+
+`.github/workflows/targets.yml` runs the sample project in `test/e2e/sample` through the CLI,
+the way `haxelib run` does, on neko, js, python, php, jvm, cpp, hl and lua (Haxe 4.3.7,
+Ubuntu). Each job fails unless the run passes and reports the expected number of assertions.
+To try one target locally: `test/e2e/run.sh <target>` (jvm needs `lix install haxelib:hxjava`,
+cpp needs `lix install haxelib:hxcpp`; don't commit those `haxe_libraries` files).
+
+On Windows, lix installs `haxe` as `haxe.cmd`, which `sys.io.Process` can't start directly;
+`Fixture.run` goes through the shell there. `Sys.command` already uses the shell.
 
 ## Release
 

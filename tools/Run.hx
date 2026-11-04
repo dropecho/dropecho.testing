@@ -30,7 +30,9 @@ enum abstract TargetType(String) from String to String {
 enum abstract TargetRunner(String) to String {
 	var node = "node";
 	var neko = "neko";
-	var python = "python3";
+	var python3 = "python3";
+	var python = "python";
+	var py = "py";
 	var java = "java";
 	var php = "php";
 	var hl = "hl";
@@ -241,7 +243,8 @@ class Run {
 
 		var isWindows = Sys.systemName() == "Windows";
 		var hasMono = found.exists(t -> t.target == cs) && CommandExists("mono", isWindows);
-		var runs = [for (target in found) RunnerFor(target, isWindows, hasMono)];
+		var python = found.exists(t -> t.target == TargetType.python) ? PythonCommand(isWindows, cmd -> CommandExists(cmd, isWindows)) : TargetRunner.python3;
+		var runs = [for (target in found) RunnerFor(target, isWindows, hasMono, python)];
 
 		for (i in 0...found.length) {
 			if (runs[i] == Unsupported) {
@@ -394,14 +397,35 @@ class Run {
 	}
 
 	/**
+	Picks the Python program to run python tests with.
+
+	Windows installs usually have `python` or the `py` launcher, not `python3`; elsewhere
+	`python3` is the usual name and `python` may be Python 2 or missing.
+
+	@param isWindows Whether the tests run on Windows.
+	@param exists Whether a program is installed.
+	@return The first installed choice, or `python3` when none is found.
+	**/
+	public static function PythonCommand(isWindows:Bool, exists:String->Bool):String {
+		var choices:Array<String> = isWindows ? [TargetRunner.python, TargetRunner.py, TargetRunner.python3] : [TargetRunner.python3, TargetRunner.python];
+		for (choice in choices) {
+			if (exists(choice)) {
+				return choice;
+			}
+		}
+		return TargetRunner.python3;
+	}
+
+	/**
 	Picks the program and arguments that run one target's compiled tests.
 
 	@param target The target line from the hxml.
 	@param isWindows Whether the tests run on Windows.
 	@param hasMono Whether `mono` is installed, for C#.
+	@param python The Python program to use; see `PythonCommand`.
 	@return The command, `RanDuringBuild` for `--interp`, or `Unsupported`.
 	**/
-	public static function RunnerFor(target:TargetConfig, isWindows:Bool, hasMono:Bool):TargetRun {
+	public static function RunnerFor(target:TargetConfig, isWindows:Bool, hasMono:Bool, python:String = TargetRunner.python3):TargetRun {
 		var path = target.path;
 		return switch (target.target) {
 			case js:
@@ -409,7 +433,7 @@ class Run {
 			case neko:
 				Command(TargetRunner.neko, [path]);
 			case python:
-				Command(TargetRunner.python, [path]);
+				Command(python, [path]);
 			case hl:
 				Command(TargetRunner.hl, [path]);
 			case lua:
