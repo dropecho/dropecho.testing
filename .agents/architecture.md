@@ -12,6 +12,8 @@ src/dropecho/testing/
 ├── UTestReport.hx         # Runtime: prints UTest results per output mode
 ├── BuddyReporter.hx       # Runtime: prints Buddy results per output mode
 ├── ReportOutput.hx        # Runtime: printing, summary line and exit shared by both reports
+├── TestFilter.hx          # Macro: reads -D dropecho_testing_filter
+├── FilteredSuitesRunner.hx # Runtime: Buddy runner that keeps only specs matching the filter
 ├── Common.hx              # Shared macro utilities: suite discovery and expr generation
 └── SuitePaths.hx          # Path rules for discovery (no macro code, unit tested)
 
@@ -56,6 +58,9 @@ The generated runners print through these, so both libraries share the output mo
 - `verbose`: a summary block, then every test
 They are guarded by `#if (utest && !macro)` / `#if (buddy && !macro)`, so each compiles only when its library is present. Code that branches on the target (`#if sys`, `#if js`) belongs in these runtime classes: inside `macro { }` reification, `#if` is checked against the macro context, where `sys` is always defined.
 
+### Test filtering
+`TestFilter.fromDefine()` reads `-D dropecho_testing_filter` (an empty value is a compile error). When set, the UTest builder sets `runner.globalPattern` before adding cases and exits 1 if no fixture was added; the Buddy builder uses `FilteredSuitesRunner`, which turns on Buddy's include mode so its `startIncludeMode()` hook runs once the spec tree is built, filters specs there (after any `@include` filtering), and exits 1 if nothing is left.
+
 ### `Common` (`src/dropecho/testing/Common.hx`)
 Macro-only utilities:
 - `collectSuites()` — runs the steps below for every classpath and returns the suite exprs; both builders call it
@@ -86,7 +91,7 @@ Invoked by `haxelib run dropecho.testing`. Reads `.dropecho.testing.json` over t
 ```
 haxelib run dropecho.testing
   → Run.main()
-    → ParseArgs()                             # command (run/setup/help) and --verbose/--show-headers
+    → ParseArgs()                             # command (run/setup/help), --verbose/--show-headers and --filter
     → LoadConfig() → MergeConfig()            # .dropecho.testing.json over DefaultConfig()
     → ParseTargets(hxml) → RunnerFor(target)  # parses hxml for --js, --neko, etc.; fails on none or unsupported
     → IsSafeToClean() → CleanPath()           # deletes old output, only inside the project

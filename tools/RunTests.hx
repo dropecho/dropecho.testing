@@ -94,7 +94,7 @@ class RunTests extends Test {
 
 	function testParseArgsDefaultsToRun() {
 		var request = requestOf([]);
-		Assert.equals(RunTests, request.command);
+		Assert.equals(CliCommand.RunTests, request.command);
 		Assert.same([], request.defines);
 	}
 
@@ -233,6 +233,32 @@ class RunTests extends Test {
 	function testRunnerForFlashIsUnsupported() {
 		Assert.isTrue(Run.RunnerFor(target(swf, "out/t.swf"), false, false) == Unsupported);
 		Assert.isTrue(Run.RunnerFor(target(as3, "out/as3"), false, false) == Unsupported);
+	}
+
+	function testParseArgsPassesTheFilterAsADefine() {
+		Assert.same(["dropecho_testing_filter=MathTests"], requestOf(["--filter", "MathTests"]).defines);
+	}
+
+	function testParseArgsAcceptsTheFilterWithAnEqualsSign() {
+		Assert.same(["dropecho_testing_filter=Math|Parser"], requestOf(["--filter=Math|Parser"]).defines);
+	}
+
+	function testParseArgsKeepsTheFilterAlongsideOtherFlags() {
+		Assert.same(["verbose", "dropecho_testing_filter=Math"], requestOf(["--verbose", "run", "--filter", "Math"]).defines);
+	}
+
+	function testParseArgsRejectsAFilterWithoutAPattern() {
+		Assert.isTrue(isInvalid(["--filter"]));
+		Assert.isTrue(isInvalid(["--filter="]));
+		Assert.isTrue(isInvalid(["--filter", "--verbose"]));
+	}
+
+	function testParseArgsRejectsARepeatedFilter() {
+		Assert.isTrue(isInvalid(["--filter", "A", "--filter", "B"]));
+	}
+
+	function testParseArgsRejectsTheFilterWithSetup() {
+		Assert.isTrue(isInvalid(["setup", "--filter", "A"]));
 	}
 
 	function testRunnerForPythonUsesTheChosenProgram() {

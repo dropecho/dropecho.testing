@@ -30,6 +30,16 @@ class ReportOutput {
 	}
 
 	/**
+	Reports that a filtered run found no tests, then exits with code 1.
+
+	@param pattern The filter pattern that matched nothing.
+	**/
+	public static function noMatches(pattern:String) {
+		print('No tests matched the filter "$pattern".');
+		exit(1);
+	}
+
+	/**
 	Builds the one-line summary printed in the default output mode.
 
 	@param ok Whether every test passed.
