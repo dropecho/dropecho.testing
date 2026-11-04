@@ -3,8 +3,8 @@
 ## Building
 
 ```bash
-# Build library (generates docs.xml)
-haxe build.hxml
+# Build library and docs (artifacts/docs.xml); npm test runs this first
+npm run build
 
 # Generate documentation
 haxe targets/docs.hxml
