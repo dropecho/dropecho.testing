@@ -1,0 +1,7 @@
+# The unit tests with coverage of the library's runtime code and the CLI.
+# Writes artifacts/coverage/lcov.info, which CI posts on the pull request.
+test.hxml
+
+--library instrument
+--macro instrument.Instrumentation.coverage(["dropecho.testing", "tools"], ["src", "."], ["tools.RunTests"])
+--define coverage-lcov-reporter=artifacts/coverage/lcov.info
