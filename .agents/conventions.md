@@ -76,7 +76,7 @@ haxelib run dropecho.testing [run|setup|help] [--verbose] [--show-headers]
 | `jvm` | `java -jar <file>` |
 | `java` | `java -jar <dir>/AutoTest.jar` |
 | `cs` | `<dir>/bin/AutoTest.exe` on Windows; otherwise `mono`, or `dotnet` without mono |
-| `python` | `python3 <file>` |
+| `python` | `python3 <file>`, falling back to `python`; on Windows `python`, then `py`, then `python3` |
 | `php` | `php <dir>/index.php` |
 | `hl` | `hl <file>` |
 | `lua` | `lua <file>` |

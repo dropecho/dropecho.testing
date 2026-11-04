@@ -64,7 +64,7 @@ Macro-only utilities:
 - `extractExpr(base, path)` — converts a filesystem path like `src/foo/BarTests.hx` into a macro `Expr` for `new foo.BarTests()`
 
 ### `tools/Run.hx`
-Invoked by `haxelib run dropecho.testing`. Reads `.dropecho.testing.json` over the defaults, compiles using `haxe --main dropecho.testing.AutoTest <hxml>`, then runs the compiled output of each target (js→node, neko, python→python3, hl, etc.). Stops with a non-zero exit when the build fails; otherwise returns the last failing target's exit code, or 0.
+Invoked by `haxelib run dropecho.testing`. Reads `.dropecho.testing.json` over the defaults, compiles using `haxe --main dropecho.testing.AutoTest <hxml>`, then runs the compiled output of each target (js→node, neko, python→python3 or python, hl, etc.). Stops with a non-zero exit when the build fails; otherwise returns the last failing target's exit code, or 0.
 
 ## Compile-Time Data Flow
 
