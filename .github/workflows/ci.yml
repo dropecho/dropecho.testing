@@ -15,4 +15,6 @@ jobs:
       # Oldest supported (the macros need Haxe 4.2+), the pinned default, and the latest release.
       haxe-versions: '["4.2.5", "4.3.0", "4.3.7"]'
       os: '["ubuntu-latest", "windows-latest", "macos-latest"]'
+      # Posts coverage of the runtime code and the CLI on each pull request.
+      coverage-script: test:coverage
     secrets: inherit

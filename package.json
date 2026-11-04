@@ -8,7 +8,8 @@
   "scripts": {
     "prepare": "lix download",
     "build": "haxe build.hxml",
-    "test": "npm run build && haxe --main dropecho.testing.AutoTest test.hxml && neko artifacts/test/run_tests.n"
+    "test": "npm run build && haxe --main dropecho.testing.AutoTest test.hxml && neko artifacts/test/run_tests.n",
+    "test:coverage": "haxe --main dropecho.testing.AutoTest coverage.hxml && neko artifacts/test/run_tests.n"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^7.0.0",

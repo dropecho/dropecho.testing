@@ -317,22 +317,22 @@ class Run {
 	@return The arguments, or none when coverage and profiling are both off.
 	**/
 	public static function InstrumentArgs(config:RunConfig):Array<String> {
-		var instrument = config.instrument;
-		if (!instrument.coverage && !instrument.profiler) {
+		var settings = config.instrument;
+		if (!settings.coverage && !settings.profiler) {
 			return [];
 		}
 
 		var args = ["--library", "instrument", "--define", "instrument"];
 		var packages = config.root_package != null ? [config.root_package] : [""];
-		var filters = Json.stringify(packages) + ", " + Json.stringify(instrument.coverage_paths) + ", []";
+		var filters = Json.stringify(packages) + ", " + Json.stringify(settings.coverage_paths) + ", []";
 
-		if (instrument.coverage) {
+		if (settings.coverage) {
 			args = args.concat(["--macro", 'instrument.Instrumentation.coverage($filters)']);
-			if (instrument.coverage_reporter != null) {
-				args = args.concat(["--define", ReporterDefine(instrument.coverage_reporter)]);
+			if (settings.coverage_reporter != null) {
+				args = args.concat(["--define", ReporterDefine(settings.coverage_reporter)]);
 			}
 		}
-		if (instrument.profiler) {
+		if (settings.profiler) {
 			args = args.concat(["--macro", 'instrument.Instrumentation.profiling($filters)']);
 		}
 		return args;
@@ -548,14 +548,14 @@ class Run {
 		config.hxml = ValueOr(user, "hxml", config.hxml);
 		config.root_package = ValueOr(user, "root_package", config.root_package);
 
-		var instrument:Dynamic = Reflect.field(user, "instrument");
-		if (instrument != null) {
+		var userSettings:Dynamic = Reflect.field(user, "instrument");
+		if (userSettings != null) {
 			var defaults = config.instrument;
 			config.instrument = {
-				coverage: ValueOr(instrument, "coverage", defaults.coverage),
-				profiler: ValueOr(instrument, "profiler", defaults.profiler),
-				coverage_reporter: ValueOr(instrument, "coverage_reporter", defaults.coverage_reporter),
-				coverage_paths: ValueOr(instrument, "coverage_paths", defaults.coverage_paths),
+				coverage: ValueOr(userSettings, "coverage", defaults.coverage),
+				profiler: ValueOr(userSettings, "profiler", defaults.profiler),
+				coverage_reporter: ValueOr(userSettings, "coverage_reporter", defaults.coverage_reporter),
+				coverage_paths: ValueOr(userSettings, "coverage_paths", defaults.coverage_paths),
 			};
 		}
 		return config;

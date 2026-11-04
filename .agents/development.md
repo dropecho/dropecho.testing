@@ -33,6 +33,12 @@ build folders from the root scan with `dropecho_testing_exclude`.
 - Keep fixtures out of `test/src`, or `AutoTest` will discover them as this repo's tests.
 - Haxe libraries are managed by lix (`.haxerc`, `haxe_libraries/`); add one with
   `lix install haxelib:<name>`.
+- `npm run test:coverage` runs the same tests through `coverage.hxml`, which adds the
+  instrument library and writes `artifacts/coverage/lcov.info`. It covers the runtime code
+  and the CLI; macro code runs at compile time and fixture runs are separate processes, so
+  neither shows up. CI posts the report as a pull request comment.
+- Don't name a local variable `instrument` in covered code: it hides the `instrument`
+  package from the code the library injects, and the coverage build fails.
 
 ## Adding Support for a New Test Framework
 
