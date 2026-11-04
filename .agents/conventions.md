@@ -23,6 +23,7 @@
 | `instrument` | Enables coverage and profiler shutdown hooks in generated `main()` |
 | `dropecho_testing_exclude` | Comma-separated folders discovery skips, each relative to the classpath root being scanned and matched by whole segments (`test` skips `test/fixtures`, not `testing`) |
 | `doc-gen` | Skips test discovery in `AutoTest` so docs builds work without a test library (set in `targets/docs.hxml`) |
+| `dropecho_testing_filter` | Regex searched in each test's full name; only matches run, and a run with no matches prints a message and exits 1. UTest: `pack.Class.testName` (utest's `globalPattern`). Buddy: `pack.Class.` + `describe`/`it` texts joined by spaces (`FilteredSuitesRunner`). Ignored with `dropecho_testing_suite` |
 | `dropecho_testing_lib` | `utest` or `buddy`: which library to use when both are on the classpath (default: Buddy) |
 | `show_headers` | Prints a results summary block; still hides passing tests (UTest and Buddy) |
 | `verbose` | Prints the summary block and every test; wins over `show_headers` (UTest and Buddy) |
@@ -52,11 +53,12 @@ Without `show_headers` or `verbose`, runs print only failures and a one-line sum
 ## CLI
 
 ```
-haxelib run dropecho.testing [run|setup|help] [--verbose] [--show-headers]
+haxelib run dropecho.testing [run|setup|help] [--verbose] [--show-headers] [--filter <pattern>]
 ```
 
 - `run` (default) builds the hxml with `--main dropecho.testing.AutoTest` and runs each target.
 - `--verbose` / `--show-headers` add `-D verbose` / `-D show_headers` to the build.
+- `--filter <pattern>` (or `--filter=<pattern>`) adds `-D dropecho_testing_filter=<pattern>`. It may be given once; a missing or empty pattern is a usage error.
 - Unknown arguments print usage and exit 1.
 - The run exits non-zero when the build fails (nothing runs), when the hxml has no targets, when a target can't be run, or when a target path is outside the project or is the project itself (it is deleted before each build).
 

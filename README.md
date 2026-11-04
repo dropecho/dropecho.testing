@@ -74,6 +74,7 @@ To test on several targets, separate them with `--each` and `--next`:
 |---|---|
 | `--verbose` | Print a summary and every test |
 | `--show-headers` | Print a summary and only failing tests |
+| `--filter <pattern>` | Run only tests whose full name matches (see `dropecho_testing_filter`) |
 | `setup` | Write a `.dropecho.testing.json` with the defaults |
 | `help` | Show usage |
 
@@ -96,6 +97,17 @@ Add these to `test.hxml` (`--define verbose`) or pass them to `haxe` (`-D verbos
 | `dropecho_testing_exclude=a,b` | Skip these folders when looking for tests. Paths are relative to each classpath, e.g. `test/fixtures,node_modules` |
 | `dropecho_testing_lib=utest` | Choose `utest` or `buddy` when both are installed (buddy otherwise) |
 | `dropecho_testing_suite=my.Suite` | Skip discovery and run `my.Suite.main()` instead |
+| `dropecho_testing_filter=<pattern>` | Run only tests whose full name matches this regular expression. The run fails if nothing matches |
+
+### Filtering tests
+
+The pattern is a regular expression searched anywhere in each test's full name:
+
+- utest: `package.ClassName.testName`, e.g. `parser.ParserTests.testParses`
+- buddy: `package.ClassName.` followed by the `describe` and `it` texts joined by spaces,
+  e.g. `MathTests.Math adds`
+
+So `MathTests` runs one class with either library, and `Math|Parser` runs both.
 
 ## Config file
 
