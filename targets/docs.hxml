@@ -1,3 +1,6 @@
 ## DOCS
 
+# Skips test discovery in AutoTest, which needs a test library.
+--define doc-gen
+
 -xml artifacts/docs.xml

@@ -12,6 +12,11 @@ class IncludeTestsMacro {
 	public static function buildTests() {
 		var fields = Context.getBuildFields();
 
+		// Docs builds have no test library, so leave AutoTest as it is.
+		if (Context.defined("doc_gen")) {
+			return fields;
+		}
+
 		var testSuite = Context.definedValue("dropecho_testing_suite");
 		if (testSuite != null && StringTools.trim(testSuite) != "") {
 			return makeTestSuiteProxy(fields, testSuite);
