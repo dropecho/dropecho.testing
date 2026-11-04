@@ -1,7 +1,7 @@
 {
   "name": "@dropecho/dropecho.testing",
-  "version": "0.1.0",
-  "description": "An 'automated' testing lib.",
+  "private": true,
+  "description": "Runs every *Tests.hx class on the classpath with utest or buddy, found at compile time, plus a CLI that builds and runs them on each Haxe target.",
   "author": "vantreeseba <vantreeseba@gmail.com>",
   "repository": "github:dropecho/dropecho.testing",
   "license": "MIT",
@@ -11,14 +11,13 @@
     "test": "npm run build && haxe --main dropecho.testing.AutoTest test.hxml && neko artifacts/test/run_tests.n"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^11.0.1",
+    "@semantic-release/github": "^12.0.10",
+    "@semantic-release/release-notes-generator": "^14.1.1",
     "lix": "^16.0.2",
-    "@semantic-release/changelog": "^6.0.2",
-    "@semantic-release/commit-analyzer": "^9.0.2",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.7",
-    "@semantic-release/release-notes-generator": "^10.0.3",
-    "semantic-release": "^19.0.5",
+    "semantic-release": "^25.0.9",
     "semantic-release-haxelib": "^1.1.0"
   }
 }

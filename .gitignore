@@ -8,3 +8,4 @@ lcov.info
 *.swp
 .temp
 .vim/
+dump/
