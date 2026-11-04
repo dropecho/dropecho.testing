@@ -28,7 +28,10 @@ jobs:
           node-version: 22
           cache: "npm"
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          # lix installs haxe into node_modules/.bin; users have it on PATH.
+          echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
       - name: Set up Haxe via lix
         run: |
           npx lix install haxe 4.3.7
@@ -57,7 +60,7 @@ jobs:
         if: matrix.target == 'lua'
         uses: leafo/gh-actions-lua@v13
         with:
-          luaVersion: "5.4"
+          luaVersion: "5.3"
       - name: Install LuaRocks
         if: matrix.target == 'lua'
         uses: leafo/gh-actions-luarocks@v6
@@ -65,8 +68,10 @@ jobs:
         if: matrix.target == 'lua'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libpcre2-dev
+          sudo apt-get install -y libpcre3-dev libpcre2-dev
           luarocks install haxe-deps
+          # Haxe 4.3 uses PCRE2 for EReg; haxe-deps only installs the PCRE1 binding.
+          luarocks install lrexlib-pcre2
 
       - name: Run the sample tests through the CLI
         run: test/e2e/run.sh ${{ matrix.target }}
