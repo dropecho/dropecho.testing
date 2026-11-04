@@ -1,0 +1,5 @@
+# Shared settings for every target. The library comes from this checkout's src,
+# so CI tests the code in the PR rather than a released version.
+--class-path ../../../src
+--class-path test
+--library utest
